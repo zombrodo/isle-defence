@@ -34,4 +34,6 @@ Colour.fromHex = function(hex, alpha)
   return colour
 end
 
+Colour.Blue = Colour.fromHex("#73bed3")
+
 return Colour

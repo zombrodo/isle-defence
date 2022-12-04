@@ -2,5 +2,8 @@
   "Lua.workspace.library": [
     "D:\\Tools\\Love\\API",
     "${3rd}/love2d/library"
+  ],
+  "Lua.diagnostics.disable": [
+    "param-type-mismatch"
   ]
 }
