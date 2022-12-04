@@ -13,17 +13,34 @@ Island.szHeight = 8
 Island.szX = 4
 Island.szY = 10
 
-function Island.new(x, y)
+Island.collHeight = 14
+Island.collWidth = 32
+Island.collX = 0
+Island.collY = 8
+
+function Island.new(physics, x, y)
   local self = setmetatable({}, Island)
   self.x = x
   self.y = y
   self.bob = SineGenerator.new(1, 2)
   self.build = Build.new(BuildType.Mine)
+  self.physics = physics
+
+  self.body = self.physics:newRectangleCollider(
+    (self.x + Island.collX) - Island.sprite:getWidth() / 2,
+    (self.y + Island.collY) - Island.sprite:getHeight() / 2,
+    Island.collWidth,
+    Island.collHeight)
+
+  self.body:setFixedRotation(true)
+  self.body:setMass(20)
+
+
   return self
 end
 
 function Island:update(dt)
-
+  self.x, self.y = self.body:getPosition()
 end
 
 function Island:draw()

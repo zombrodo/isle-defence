@@ -13,9 +13,9 @@ function Build:update(dt)
 
 end
 
-function Build:draw(x, y)
+function Build:draw(x, y, r)
   love.graphics.push("all")
-  love.graphics.draw(BuildType.sprite(self.buildType), x, y)
+  love.graphics.draw(BuildType.sprite(self.buildType), x, y, r)
   love.graphics.pop()
 end
 
