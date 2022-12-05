@@ -1,6 +1,6 @@
 local BuildType = {}
 
-BuildType.Blank = "build/blank"
+BuildType.None = "build/none"
 BuildType.Farm = "build/farm"
 BuildType.House = "build/house"
 BuildType.Forest = "build/forest"
@@ -16,6 +16,20 @@ local sprites = {
   [BuildType.Ore] = love.graphics.newImage("assets/placement/ore.png"),
   [BuildType.Mine] = love.graphics.newImage("assets/placement/mine.png")
 }
+
+local types = {
+  BuildType.None,
+  BuildType.Farm,
+  BuildType.House,
+  BuildType.Forest,
+  BuildType.Woodcutter,
+  BuildType.Ore,
+  BuildType.Mine,
+}
+
+function BuildType.rando()
+  return types[love.math.random(1, #types)]
+end
 
 function BuildType.sprite(buildType)
   return sprites[buildType]
