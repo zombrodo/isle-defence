@@ -22,8 +22,8 @@ function Island.new(physics, x, y)
   local self = setmetatable({}, Island)
   self.x = x
   self.y = y
-  self.bob = SineGenerator.new(1, 2)
-  self.build = Build.new(BuildType.None)
+  self.bob = SineGenerator.new(1, 2, true)
+  self.build = Build.new(BuildType.Forest)
   self.physics = physics
 
   self.body = self.physics:newRectangleCollider(
@@ -33,8 +33,10 @@ function Island.new(physics, x, y)
     Island.collHeight)
 
   self.body:setFixedRotation(true)
-  self.body:setMass(20)
-  self.body:setFriction(0.6)
+  self.body:setMass(50)
+  self.body:setRestitution(0.05)
+  self.body:setLinearDamping(0.3)
+  -- self.body:setFriction(1)
 
   return self
 end
