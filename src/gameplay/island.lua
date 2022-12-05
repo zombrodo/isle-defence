@@ -23,7 +23,7 @@ function Island.new(physics, x, y)
   self.x = x
   self.y = y
   self.bob = SineGenerator.new(1, 2)
-  self.build = Build.new(BuildType.Mine)
+  self.build = Build.new(BuildType.None)
   self.physics = physics
 
   self.body = self.physics:newRectangleCollider(
@@ -34,7 +34,7 @@ function Island.new(physics, x, y)
 
   self.body:setFixedRotation(true)
   self.body:setMass(20)
-
+  self.body:setFriction(0.6)
 
   return self
 end

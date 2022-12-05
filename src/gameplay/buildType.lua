@@ -1,5 +1,6 @@
 local BuildType = {}
 
+BuildType.Blank = "build/blank"
 BuildType.Farm = "build/farm"
 BuildType.House = "build/house"
 BuildType.Forest = "build/forest"

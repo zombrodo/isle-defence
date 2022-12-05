@@ -15,7 +15,9 @@ end
 
 function Build:draw(x, y, r)
   love.graphics.push("all")
-  love.graphics.draw(BuildType.sprite(self.buildType), x, y, r)
+  if self.buildType ~= BuildType.None then
+    love.graphics.draw(BuildType.sprite(self.buildType), x, y, r)
+  end
   love.graphics.pop()
 end
 
