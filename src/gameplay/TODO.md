@@ -2,6 +2,17 @@ TODO
 
 5/12/22
 ===
-* [~] Island Connection
-* [] Resources
-* [] Building
+* [x] Island Connection
+* [~] Resources
+* [ ] Building
+
+8/12/22
+===
+
+* [ ] Towers
+* [ ] Enemies
+* [ ] Spawning
+
+
+* [ ] Menus
+

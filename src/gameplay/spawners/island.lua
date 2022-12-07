@@ -3,6 +3,8 @@ local Island = require "src.gameplay.island"
 local IslandSpawner = {}
 IslandSpawner.__index = IslandSpawner
 
+IslandSpawner.mod = 175
+
 function IslandSpawner.new(physics)
   local self = setmetatable({}, IslandSpawner)
   self.physics = physics
@@ -46,7 +48,10 @@ function IslandSpawner:spawn()
   end
 
   local island = Island.new(self.physics, spawnX, spawnY)
-  island.body:applyLinearImpulse(velX * 100, velY * 100)
+  island.body:applyLinearImpulse(
+    velX * IslandSpawner.mod,
+    velY * IslandSpawner.mod
+  )
 
   return island
 end

@@ -21,6 +21,8 @@ Island.collWidth = 32
 Island.collX = 0
 Island.collY = 8
 
+Island.guidelineColour = Colour.withAlpha(Colour.fromHex("#222222"), 0.5)
+
 function Island.new(physics, x, y)
   local self = setmetatable({}, Island)
   self.x = x
@@ -42,6 +44,7 @@ function Island.new(physics, x, y)
   -- self.body:setFriction(1)
 
   self.hovered = false
+  self.connections = {}
 
   return self
 end
@@ -55,30 +58,31 @@ function Island:update(dt)
   end
 end
 
-function Island:attach(rope)
-  self.connection = rope
-
-  if not rope.from then
-    rope:setFrom(self)
-    return
-  end
-
-  if not rope.to then
-    rope:setTo(self)
-    return
+function Island:attach(connection)
+  table.insert(self.connections, connection)
+  if not connection.parent then
+    connection:setParent(self)
+  else
+    connection:setChild(self)
   end
 end
 
-function Island:detach()
-  if self.connection.from == self then
-    self.connection:setFrom(nil)
+function Island:detach(connection)
+  for i = #self.connections, 1, -1 do
+    if self.connections[i] == connection then
+      table.remove(self.connections, i)
+    end
+  end
+end
+
+function Island:currentlySetting()
+  for i, connection in ipairs(self.connections) do
+    if connection.child == nil then
+      return true
+    end
   end
 
-  if self.connection.to == self then
-    self.connection:setTo(nil)
-  end
-
-  self.connection = nil
+  return false
 end
 
 function Island:draw()
@@ -96,12 +100,18 @@ function Island:draw()
   self.build:draw((self.x + Island.szX) - Island.sprite:getWidth() / 2,
     ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8)
 
-
   love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#222222"), 0.2))
   love.graphics.ellipse("fill", self.x, self.y + 30, 15, 8)
 
-  if self.connection then
-    self.connection:draw()
+  for i, connection in ipairs(self.connections) do
+    if connection.parent == self then
+      connection:draw()
+    end
+  end
+
+  if self:currentlySetting() then
+    love.graphics.setColor(Island.guidelineColour)
+    love.graphics.circle("line", self.x, self.y, 75)
   end
 
   love.graphics.pop()
