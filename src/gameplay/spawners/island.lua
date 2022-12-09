@@ -1,4 +1,5 @@
 local Island = require "src.gameplay.island"
+local BuildType = require "src.gameplay.buildType"
 
 local IslandSpawner = {}
 IslandSpawner.__index = IslandSpawner
@@ -23,31 +24,31 @@ function IslandSpawner:spawn()
     spawnX = -20
     spawnY = love.math.random(20, GAME_HEIGHT - 20)
     velX = 20
-    velY = 0
+    velY = love.math.random(-20, 20)
   end
 
   if dir == "right" then
     spawnX = GAME_WIDTH + 20
     spawnY = love.math.random(20, GAME_HEIGHT - 20)
     velX = -20
-    velY = 0
+    velY = love.math.random(-20, 20)
   end
 
   if dir == "bottom" then
     spawnX = love.math.random(20, GAME_WIDTH - 20)
     spawnY = GAME_HEIGHT + 20
-    velX = 0
+    velX = love.math.random(-20, 20)
     velY = -20
   end
 
   if dir == "top" then
     spawnX = love.math.random(20, GAME_WIDTH - 20)
     spawnY = -20
-    velX = 0
+    velX = love.math.random(-20, 20)
     velY = 20
   end
 
-  local island = Island.new(self.physics, spawnX, spawnY)
+  local island = Island.new(self.physics, spawnX, spawnY, BuildType.randomSpawn())
   island.body:applyLinearImpulse(
     velX * IslandSpawner.mod,
     velY * IslandSpawner.mod

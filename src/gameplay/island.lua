@@ -23,12 +23,12 @@ Island.collY = 8
 
 Island.guidelineColour = Colour.withAlpha(Colour.fromHex("#222222"), 0.5)
 
-function Island.new(physics, x, y)
+function Island.new(physics, x, y, buildType)
   local self = setmetatable({}, Island)
   self.x = x
   self.y = y
   self.bob = SineGenerator.new(1, 2, true)
-  self.build = Build.new(BuildType.rando())
+  self.build = Build.new(buildType)
   self.physics = physics
 
   self.body = self.physics:newRectangleCollider(
@@ -39,7 +39,7 @@ function Island.new(physics, x, y)
 
   self.body:setFixedRotation(true)
   self.body:setMass(50)
-  self.body:setRestitution(0.05)
+  self.body:setRestitution(1)
   self.body:setLinearDamping(0.3)
   -- self.body:setFriction(1)
 

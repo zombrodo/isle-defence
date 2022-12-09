@@ -17,18 +17,14 @@ local sprites = {
   [BuildType.Mine] = love.graphics.newImage("assets/placement/mine.png")
 }
 
-local types = {
+local spawnableLocations = {
   BuildType.None,
-  BuildType.Farm,
-  BuildType.House,
   BuildType.Forest,
-  BuildType.Woodcutter,
   BuildType.Ore,
-  BuildType.Mine,
 }
 
-function BuildType.rando()
-  return types[love.math.random(1, #types)]
+function BuildType.randomSpawn()
+  return spawnableLocations[love.math.random(1, #spawnableLocations)]
 end
 
 function BuildType.sprite(buildType)
