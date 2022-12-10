@@ -21,6 +21,8 @@ Island.collWidth = 32
 Island.collX = 0
 Island.collY = 8
 
+Island.towerRange = Colour.fromHex("#253a5e")
+
 Island.guidelineColour = Colour.withAlpha(Colour.fromHex("#222222"), 0.5)
 
 function Island.new(physics, x, y, buildType)
@@ -51,6 +53,8 @@ end
 
 function Island:update(dt, isTooltipOpen)
   self.x, self.y = self.body:getPosition()
+
+  self.build:update(dt)
 
   if isTooltipOpen then
     return
@@ -98,6 +102,14 @@ function Island:draw()
   if self.hovered then
     love.graphics.draw(Island.hovered, self.x, self.y, 0, 1, 1, Island.hovered:getWidth() / 2,
       Island.hovered:getHeight() / 2)
+
+    if self.build:isTower() then
+      love.graphics.setColor(Colour.withAlpha(Island.towerRange, 0.5))
+      love.graphics.circle("fill", self.x, self.y, 120)
+      love.graphics.setColor(Island.towerRange)
+      love.graphics.circle("line", self.x, self.y, 120)
+      love.graphics.setColor(1, 1, 1, 1)
+    end
   end
 
   love.graphics.draw(Island.sprite, self.x, self.y, 0, 1, 1, Island.sprite:getWidth() / 2,

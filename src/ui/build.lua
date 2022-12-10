@@ -31,6 +31,7 @@ function BuildPanel:new(rules, stockpile)
 
   Events:subscribe("buildPanel/hide", function()
     panel.visible = false
+    panel:clearChildren()
     panel.island = nil
   end)
 
@@ -48,7 +49,8 @@ local function buildOptions(buildType)
     return {
       option(BuildType.Farm),
       option(BuildType.Hemp),
-      option(BuildType.House)
+      option(BuildType.House),
+      option(BuildType.Tower)
     }
   end
 

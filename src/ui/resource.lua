@@ -16,6 +16,10 @@ local function pad(n)
     p = "0"
   end
 
+  if n > 100 then
+    p = ""
+  end
+
   return p .. tostring(n)
 end
 

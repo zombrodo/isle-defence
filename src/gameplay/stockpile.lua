@@ -12,6 +12,11 @@ function Stockpile.new()
     [ResourceType.People] = 10,
     [ResourceType.Rope] = 30
   }
+
+  Events:subscribe("stockpile/add", function(resource, amount)
+    self:add(resource, amount)
+  end)
+
   return self
 end
 

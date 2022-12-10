@@ -4,7 +4,7 @@ TODO
 ===
 * [x] Island Connection
 * [x] Resources
-* [~] Building
+* [x] Building
 
 8/12/22
 ===
@@ -13,6 +13,8 @@ TODO
 * [ ] Enemies
 * [ ] Spawning
 
+* [ ] Clearing Tiles
+* [ ] Costing
 
 * [ ] Menus
 

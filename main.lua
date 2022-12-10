@@ -40,13 +40,13 @@ function love.draw()
   Screen:detach()
   SceneManager:emit("drawUI")
 
-  if DEBUG_MODE then
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle('fill', 0, 0, 256, 64)
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print('FPS: ' .. love.timer.getFPS(), 0, 0)
-    love.graphics.print('Memory: ' .. math.floor(collectgarbage 'count') .. ' kb', 0, 16)
-  end
+  -- if DEBUG_MODE then
+  --   love.graphics.setColor(0, 0, 0)
+  --   love.graphics.rectangle('fill', 0, 0, 256, 64)
+  --   love.graphics.setColor(1, 1, 1)
+  --   love.graphics.print('FPS: ' .. love.timer.getFPS(), 0, 0)
+  --   love.graphics.print('Memory: ' .. math.floor(collectgarbage 'count') .. ' kb', 0, 16)
+  -- end
 end
 
 function love.resize()
