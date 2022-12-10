@@ -231,7 +231,7 @@ local function draw(p, x, y, w, h, content_box)
 
   love.graphics.draw(p.batch)
 
-  if debug_draw then --luacheck: ignore
+  if false then --luacheck: ignore
     love.graphics.setColor(255 / m, 0 / m, 0 / m, 255 / m)
     -- Using get_border_box fixes debug_draw drawing the box littler than how it was
     love.graphics.rectangle("line", get_border_box(p, cx, cy, cw, ch))

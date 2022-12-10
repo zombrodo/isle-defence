@@ -16,7 +16,9 @@ function Tooltip.new(width, height)
   Events:subscribe("tooltip/close", function() self.isOpen = false end)
 
   self.buildButton = TooltipButton.new(
-    80, 40, "build", function() print("dang") end
+    80, 40, "build", function()
+    Events:publish("buildPanel/show", self.island, self.island.build.buildType)
+  end
   )
 
   self.clearButton = TooltipButton.new(

@@ -163,6 +163,9 @@ function Container:emit(event, ...)
         return
       end
     end
+
+    -- Emit to all children
+    child:emit(event, ...)
   end
 end
 

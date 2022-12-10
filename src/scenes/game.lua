@@ -13,6 +13,7 @@ local Resource = require "src.ui.resource"
 local EvenlySpaced = require "src.ui.spaced"
 local Tooltip = require "src.ui.tooltip"
 local Panel = require "src.ui.panel"
+local BuildPanel = require "src.ui.build"
 
 local GameScene = {}
 GameScene.__index = GameScene
@@ -56,8 +57,18 @@ function GameScene:enter()
 
   local stockpile = EvenlySpaced.horizontal(stockpileRules, resources, 10)
 
+  local buildRules = Rules.new()
+      :addX(Plan.max(210))
+      :addY(Plan.center())
+      :addWidth(Plan.pixel(200))
+      :addHeight(Plan.relative(0.75))
+
+  local build = BuildPanel:new(buildRules)
+
   panel:addChild(stockpile)
   self.ui:addChild(panel)
+
+  self.ui:addChild(build)
 
   self.tooltip = Tooltip.new(180, 40)
 
@@ -123,7 +134,7 @@ function GameScene:attachConnector(island)
 end
 
 function GameScene:mousepressed(x, y, button)
-
+  self.ui:emit("mousepressed", x, y)
 
   if self.tooltip.isOpen and self.tooltip:inBounds(x, y) then
     self.tooltip:handleClick(x, y)
@@ -133,8 +144,6 @@ function GameScene:mousepressed(x, y, button)
     Events:publish("tooltip/close")
     return
   end
-
-  print("eh?")
 
   for i, island in ipairs(self.map.islands) do
     if island.hovered then
