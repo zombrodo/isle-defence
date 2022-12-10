@@ -27,9 +27,9 @@ function Map:addIsland(island)
   table.insert(self.islands, island)
 end
 
-function Map:update(dt)
+function Map:update(dt, isTooltipOpen)
   for i, island in ipairs(self.islands) do
-    island:update(dt)
+    island:update(dt, isTooltipOpen)
   end
   self:refreshDrawOrder()
 end

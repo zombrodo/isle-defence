@@ -57,4 +57,13 @@ function IslandSpawner:spawn()
   return island
 end
 
+function IslandSpawner:spawnEmpty(fromX, fromY, velX, velY)
+  local island = Island.new(self.physics, fromX, fromY, BuildType.None)
+  island.body:applyLinearImpulse(
+    velX * IslandSpawner.mod,
+    velY * IslandSpawner.mod
+  )
+  return island
+end
+
 return IslandSpawner

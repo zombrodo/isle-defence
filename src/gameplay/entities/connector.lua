@@ -1,8 +1,12 @@
 local Colour = require "src.utils.colour"
 local MathUtils = require "src.utils.math"
+local Fonts = require "src.utils.font"
+local ResourceType = require "src.gameplay.resourceType"
 
 local Connector = {}
 Connector.__index = Connector
+
+Connector.font = Fonts.upheaval(16)
 
 Connector.colour = Colour.fromHex("#ad7757")
 
@@ -54,10 +58,6 @@ function Connector:update(dt)
   if self:isComplete() then
     return
   end
-
-  local mx, my = Screen:getMousePosition()
-  print(MathUtils.distance(self.parent.x, self.parent.y, mx, my))
-
 end
 
 function Connector:draw()
@@ -71,6 +71,59 @@ function Connector:draw()
     love.graphics.line(self.parent.x, self.parent.y, mx, my)
   end
   love.graphics.pop()
+end
+
+function Connector:getCost()
+  if not (self.parent or self.child) then
+    return 0
+  end
+
+  return math.floor(
+    MathUtils.distance(self.parent.x, self.parent.y, self.child.x, self.child.y) / 10
+  )
+end
+
+function Connector:canConnect(stockpile)
+  if not self.parent then
+    return true
+  end
+
+  local mx, my = Screen:getMousePosition()
+  local amount = math.floor(
+    MathUtils.distance(self.parent.x, self.parent.y, mx, my) / 10
+  )
+  return stockpile:has(ResourceType.Rope, amount)
+end
+
+function Connector:drawCost(stockpile)
+  local mx, my = Screen:getMousePosition()
+  local amount = math.floor(
+    MathUtils.distance(self.parent.x, self.parent.y, mx, my) / 10
+  )
+
+  local halfX, halfY = Screen:toScreen(
+    (self.parent.x + mx) / 2, (self.parent.y + my) / 2
+  )
+
+
+  love.graphics.setColor(1, 1, 1)
+
+  love.graphics.draw(
+    ResourceType.sprite,
+    ResourceType.quad(ResourceType.Rope),
+    halfX,
+    halfY,
+    0,
+    4,
+    4
+  )
+
+  if not stockpile:has(ResourceType.Rope, amount) then
+    love.graphics.setColor(1, 0, 0)
+  end
+
+  love.graphics.print(amount, Connector.font, halfX + 32, halfY)
+
 end
 
 return Connector

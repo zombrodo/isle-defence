@@ -4,7 +4,7 @@ TODO
 ===
 * [x] Island Connection
 * [x] Resources
-* [ ] Building
+* [~] Building
 
 8/12/22
 ===

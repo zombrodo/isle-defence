@@ -19,19 +19,12 @@ local function pad(n)
   return p .. tostring(n)
 end
 
-function Resource:new(rules, resourceType)
+function Resource:new(rules, stockpile, resourceType)
   local resource = Resource.super.new(self, rules)
   resource.resourceType = resourceType
   resource.quad = ResourceType.quad(resourceType)
   resource.sprite = ResourceType.sprite
-  resource.amount = 0
-
-  Events:subscribe("resource/gain", function(rType, amount)
-    if rType == resourceType then
-      resource.amount = resource.amount + amount
-    end
-  end)
-
+  resource.stockpile = stockpile
   return resource
 end
 
@@ -40,7 +33,7 @@ function Resource:draw()
   love.graphics.push("all")
   love.graphics.translate(self.x, self.y)
   love.graphics.draw(self.sprite, self.quad, 0, 0, 0, 6, 6)
-  love.graphics.print(pad(self.amount), font, 80, 10, 0, 1, 1, font:getHeight())
+  love.graphics.print(pad(self.stockpile:get(self.resourceType)), font, 80, 10, 0, 1, 1, font:getHeight())
   love.graphics.pop()
 end
 

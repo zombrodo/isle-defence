@@ -7,6 +7,7 @@ local Map = require "src.gameplay.map"
 local IslandSpawner = require "src.gameplay.spawners.island"
 local Connector = require "src.gameplay.entities.connector"
 local ResourceType = require "src.gameplay.resourceType"
+local Stockpile = require "src.gameplay.stockpile"
 
 local Resource = require "src.ui.resource"
 local EvenlySpaced = require "src.ui.spaced"
@@ -29,12 +30,14 @@ function GameScene:enter()
 
   self.ui = Plan.new()
 
+  self.stockpile = Stockpile.new()
+
   local resources = {
-    Resource:new(Rules.new(), ResourceType.Wood),
-    Resource:new(Rules.new(), ResourceType.Food),
-    Resource:new(Rules.new(), ResourceType.Ore),
-    Resource:new(Rules.new(), ResourceType.People),
-    Resource:new(Rules.new(), ResourceType.Rope),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.Wood),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.Food),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.Ore),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.People),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.Rope),
   }
 
   local panelRules = Rules.new()
@@ -63,7 +66,6 @@ end
 
 function GameScene:update(dt)
   self.physics:update(dt)
-  self.map:update(dt)
   self.ui:update(dt)
 
   if self.currentConnector then
@@ -73,6 +75,8 @@ function GameScene:update(dt)
   if self.tooltip.isOpen then
     self.tooltip:update()
   end
+
+  self.map:update(dt, self.tooltip.isOpen)
 end
 
 function GameScene:draw()
@@ -87,6 +91,12 @@ function GameScene:drawUI()
   self.ui:draw()
   self.tooltip:draw()
   love.graphics.pop()
+
+
+  -- Render cost
+  if self.currentConnector then
+    self.currentConnector:drawCost(self.stockpile)
+  end
 end
 
 function GameScene:keypressed(key)
@@ -102,9 +112,12 @@ function GameScene:attachConnector(island)
     self.currentConnector = Connector.new(self.physics)
   end
 
-  island:attach(self.currentConnector)
+  if self.currentConnector:canConnect(self.stockpile) then
+    island:attach(self.currentConnector)
+  end
 
   if self.currentConnector:isComplete() then
+    self.stockpile:remove(ResourceType.Rope, self.currentConnector:getCost())
     self.currentConnector = nil
   end
 end
@@ -143,7 +156,6 @@ function GameScene:mousepressed(x, y, button)
   end
 
   if self.currentConnector then
-    print('detaching')
     self.currentConnector.parent:detach(self.currentConnector)
     self.currentConnector = nil
   end

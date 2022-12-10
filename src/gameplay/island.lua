@@ -49,8 +49,13 @@ function Island.new(physics, x, y, buildType)
   return self
 end
 
-function Island:update(dt)
+function Island:update(dt, isTooltipOpen)
   self.x, self.y = self.body:getPosition()
+
+  if isTooltipOpen then
+    return
+  end
+
   if Math.circularBounds(self.x, self.y, 16, Screen:getMousePosition()) then
     self.hovered = true
   elseif self.hovered then
