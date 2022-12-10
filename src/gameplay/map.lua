@@ -34,7 +34,27 @@ function Map:update(dt, isTooltipOpen)
   self:refreshDrawOrder()
 end
 
-local function dfs(root, island)
+local function filter(tbl, fn)
+  local result = {}
+  for i, elem in ipairs(tbl) do
+    if fn(elem) then
+      table.insert(result, elem)
+    end
+  end
+  return result
+end
+
+function Map:updateEnemies(dt, enemies)
+  local towers = filter(
+    self.islands, function(island) return island.build:isTower() end
+  )
+
+  for i, tower in ipairs(towers) do
+    tower.build:getTower():update(dt, enemies)
+  end
+end
+
+local function isConnected(root, island)
   local queue = Queue.new()
   local visited = Set.new()
 
@@ -66,7 +86,7 @@ function Map:isAttached(island)
     return true
   end
 
-  return dfs(self.root, island)
+  return isConnected(self.root, island)
 end
 
 function Map:draw()

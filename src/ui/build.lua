@@ -26,7 +26,7 @@ function BuildPanel:new(rules, stockpile)
   end)
 
   Events:subscribe("buildPanel/build", function(buildType)
-    panel.island.build = Build.new(buildType)
+    panel.island.build = Build.new(buildType, panel.island)
   end)
 
   Events:subscribe("buildPanel/hide", function()
@@ -39,9 +39,7 @@ function BuildPanel:new(rules, stockpile)
 end
 
 local function option(buildType)
-  local x = BuildOption:new(Rules.new(), buildType)
-  print("option", x)
-  return x
+  return BuildOption:new(Rules.new(), buildType)
 end
 
 local function buildOptions(buildType)

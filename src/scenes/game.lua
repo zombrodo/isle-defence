@@ -5,6 +5,7 @@ local Rules = Plan.Rules
 local Colour = require "src.utils.colour"
 local Map = require "src.gameplay.map"
 local IslandSpawner = require "src.gameplay.spawners.island"
+local EnemySpawner = require "src.gameplay.spawners.enemy"
 local Connector = require "src.gameplay.entities.connector"
 local ResourceType = require "src.gameplay.resourceType"
 local Stockpile = require "src.gameplay.stockpile"
@@ -23,16 +24,7 @@ function GameScene.new()
   return self
 end
 
-function GameScene:enter()
-  self.physics = Windfield.newWorld(0, 0)
-
-  self.islandSpawner = IslandSpawner.new(self.physics)
-  self.map = Map.new(self.physics)
-
-  self.ui = Plan.new()
-
-  self.stockpile = Stockpile.new()
-
+function GameScene:__stockpileUI()
   local resources = {
     Resource:new(Rules.new(), self.stockpile, ResourceType.Wood),
     Resource:new(Rules.new(), self.stockpile, ResourceType.Food),
@@ -64,12 +56,23 @@ function GameScene:enter()
       :addHeight(Plan.relative(0.75))
 
   local build = BuildPanel:new(buildRules)
-
   panel:addChild(stockpile)
   self.ui:addChild(panel)
-
   self.ui:addChild(build)
+end
 
+function GameScene:enter()
+  self.physics = Windfield.newWorld(0, 0)
+  self.islandSpawner = IslandSpawner.new(self.physics)
+  self.map = Map.new(self.physics)
+
+  self.enemySpawner = EnemySpawner.new(self.physics)
+  self.enemies = {}
+
+  -- UI
+  self.ui = Plan.new()
+  self.stockpile = Stockpile.new()
+  self:__stockpileUI()
   self.tooltip = Tooltip.new(180, 40)
 
   self.currentConnector = nil
@@ -87,13 +90,23 @@ function GameScene:update(dt)
     self.tooltip:update()
   end
 
+  for i, enemy in ipairs(self.enemies) do
+    enemy:update(dt)
+  end
+
   self.map:update(dt, self.tooltip.isOpen)
+  self.map:updateEnemies(dt, self.enemies)
 end
 
 function GameScene:draw()
   love.graphics.push("all")
   love.graphics.clear(Colour.Blue)
   self.map:draw()
+
+  for i, enemy in ipairs(self.enemies) do
+    enemy:draw()
+  end
+
   love.graphics.pop()
 end
 
@@ -112,9 +125,12 @@ end
 
 function GameScene:keypressed(key)
   if key == "p" then
-    local new = self.islandSpawner:spawn()
-    print(new)
-    self.map:addIsland(new)
+    self.map:addIsland(self.islandSpawner:spawn())
+  end
+
+  if key == "e" then
+    local mx, my = Screen:getMousePosition()
+    table.insert(self.enemies, EnemySpawner.spawn(mx, my))
   end
 end
 

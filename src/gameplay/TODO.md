@@ -9,12 +9,18 @@ TODO
 8/12/22
 ===
 
-* [ ] Towers
-* [ ] Enemies
+* [x] Towers
+* [x] Enemies
+
+* [ ] Enemy Collisions
+
 * [ ] Spawning
 
 * [ ] Clearing Tiles
 * [ ] Costing
+
+* [ ] Timing
+* [ ] Audio
 
 * [ ] Menus
 
