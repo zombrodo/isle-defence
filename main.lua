@@ -4,6 +4,9 @@ local Pixel = require "lib.pixel"
 local Roomy = require "lib.roomy"
 
 local GameScene = require "src.scenes.game"
+local PubSub = require "src.utils.pubsub"
+
+Events = nil
 
 SceneManager = nil
 Screen = nil
@@ -20,8 +23,10 @@ function love.load()
     love.graphics.getHeight()
   )
 
+  Events = PubSub.new()
+
   SceneManager = Roomy.new()
-  SceneManager:hook({ exclude = { "draw" }})
+  SceneManager:hook({ exclude = { "draw" } })
   SceneManager:enter(GameScene.new())
 end
 
@@ -34,6 +39,14 @@ function love.draw()
   SceneManager:emit("draw")
   Screen:detach()
   SceneManager:emit("drawUI")
+
+  if DEBUG_MODE then
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle('fill', 0, 0, 256, 64)
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print('FPS: ' .. love.timer.getFPS(), 0, 0)
+    love.graphics.print('Memory: ' .. math.floor(collectgarbage 'count') .. ' kb', 0, 16)
+  end
 end
 
 function love.resize()
@@ -42,7 +55,7 @@ end
 
 function love.keypressed(key)
   if key == "f5" then
----@diagnostic disable-next-line: param-type-mismatch
+    ---@diagnostic disable-next-line: param-type-mismatch
     love.event.quit("restart")
   end
 end

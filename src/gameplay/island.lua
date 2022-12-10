@@ -53,7 +53,7 @@ function Island:update(dt)
   self.x, self.y = self.body:getPosition()
   if Math.circularBounds(self.x, self.y, 16, Screen:getMousePosition()) then
     self.hovered = true
-  else
+  elseif self.hovered then
     self.hovered = false
   end
 end
@@ -68,6 +68,7 @@ function Island:attach(connection)
 end
 
 function Island:detach(connection)
+  print(connection)
   for i = #self.connections, 1, -1 do
     if self.connections[i] == connection then
       table.remove(self.connections, i)
@@ -111,7 +112,7 @@ function Island:draw()
 
   if self:currentlySetting() then
     love.graphics.setColor(Island.guidelineColour)
-    love.graphics.circle("line", self.x, self.y, 75)
+    -- love.graphics.circle("line", self.x, self.y, 75)
   end
 
   love.graphics.pop()

@@ -3,7 +3,7 @@ TODO
 5/12/22
 ===
 * [x] Island Connection
-* [~] Resources
+* [x] Resources
 * [ ] Building
 
 8/12/22

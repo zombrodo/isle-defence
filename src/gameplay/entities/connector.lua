@@ -1,4 +1,5 @@
 local Colour = require "src.utils.colour"
+local MathUtils = require "src.utils.math"
 
 local Connector = {}
 Connector.__index = Connector
@@ -47,6 +48,16 @@ end
 
 function Connector:isComplete()
   return self.child and self.parent
+end
+
+function Connector:update(dt)
+  if self:isComplete() then
+    return
+  end
+
+  local mx, my = Screen:getMousePosition()
+  print(MathUtils.distance(self.parent.x, self.parent.y, mx, my))
+
 end
 
 function Connector:draw()
