@@ -12,6 +12,7 @@ function Shot.new(x, y, dx, dy)
   self.speed = 200
   self.timer = 0
   self.maxLife = 1
+  self.size = 3
   self.alive = true
   return self
 end
@@ -29,7 +30,7 @@ end
 function Shot:draw()
   love.graphics.push("all")
   love.graphics.setColor(Colour.fromHex("#222222"))
-  love.graphics.circle("fill", self.x, self.y, 3)
+  love.graphics.circle("fill", self.x, self.y, self.size)
   love.graphics.pop()
 end
 

@@ -45,7 +45,7 @@ function Island.new(physics, x, y, buildType)
   self.body:setLinearDamping(0.3)
   -- self.body:setFriction(1)
 
-  self.health = 0
+  self.health = 100
 
   self.smoke = Particle.smoke()
   self.fire = Particle.fire()
@@ -86,6 +86,21 @@ function Island:attach(connection)
     connection:setParent(self)
   else
     connection:setChild(self)
+  end
+end
+
+function Island:collides(x, y)
+  return Math.rectBounds(x, y,
+    (self.x + Island.collX) - Island.sprite:getWidth() / 2,
+    (self.y + Island.collY) - Island.sprite:getHeight() / 2,
+    Island.collWidth,
+    Island.collHeight)
+end
+
+function Island:damage(amount)
+  self.health = self.health - amount
+  if self.health < 0 then
+    self.health = 0
   end
 end
 

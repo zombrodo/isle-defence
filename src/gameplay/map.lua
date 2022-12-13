@@ -81,7 +81,6 @@ local function isConnected(root, island)
 end
 
 function Map:isAttached(island)
-  print(island, self.root)
   if island == self.root then
     return true
   end

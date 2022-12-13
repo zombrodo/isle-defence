@@ -26,7 +26,6 @@ function Tower:find(enemies)
 
   for i, enemy in ipairs(enemies) do
     local dist = MathUtils.distance(self.x, self.y, enemy.x, enemy.y)
-    print(dist)
     if dist < r then
       r = dist
       e = enemy
@@ -54,9 +53,8 @@ function Tower:check(enemies)
   for i, shot in ipairs(self.shots) do
     for j, enemy in ipairs(enemies) do
       if enemy:collides(shot.x, shot.y) then
-        print(shot.x, shot.y)
         shot.alive = false
-        enemy.health = enemy.health - 1
+        enemy.health = enemy.health - 2
 
 
         if enemy.health <= 0 then

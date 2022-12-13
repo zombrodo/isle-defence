@@ -57,7 +57,7 @@ function GameScene:__stockpileUI()
 
   local build = BuildPanel:new(buildRules)
   panel:addChild(stockpile)
-  self.ui:addChild(panel)
+  -- self.ui:addChild(panel)
   self.ui:addChild(build)
 end
 
@@ -66,7 +66,7 @@ function GameScene:enter()
   self.islandSpawner = IslandSpawner.new(self.physics)
   self.map = Map.new(self.physics)
 
-  self.enemySpawner = EnemySpawner.new(self.physics)
+  self.enemySpawner = EnemySpawner.new(self.physics, self.map)
   self.enemies = {}
 
   -- UI
@@ -137,7 +137,7 @@ function GameScene:keypressed(key)
 
   if key == "e" then
     local mx, my = Screen:getMousePosition()
-    table.insert(self.enemies, EnemySpawner.spawn(mx, my))
+    table.insert(self.enemies, self.enemySpawner:spawn(mx, my))
   end
 end
 
