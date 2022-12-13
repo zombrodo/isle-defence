@@ -45,7 +45,7 @@ function Island.new(physics, x, y, buildType)
   self.body:setLinearDamping(0.3)
   -- self.body:setFriction(1)
 
-  self.health = 100
+  self.health = 0
 
   self.smoke = Particle.smoke()
   self.fire = Particle.fire()
@@ -152,6 +152,33 @@ function Island:draw()
   if self:currentlySetting() then
     love.graphics.setColor(Island.guidelineColour)
     -- love.graphics.circle("line", self.x, self.y, 75)
+  end
+
+  if self.hovered and self.build:hasHealth() then
+    love.graphics.setColor(Colour.fromHex("#222222"))
+    love.graphics.rectangle(
+      "fill",
+      (self.x - Island.sprite:getWidth() / 2) - 1,
+      self.y - 21,
+      Island.sprite:getWidth() + 2,
+      6
+    )
+    love.graphics.setColor(Colour.fromHex("#a53030"))
+    love.graphics.rectangle(
+      "fill",
+      self.x - Island.sprite:getWidth() / 2,
+      self.y - 20,
+      Island.sprite:getWidth(),
+      4
+    )
+    love.graphics.setColor(Colour.fromHex("#a8ca58"))
+    love.graphics.rectangle(
+      "fill",
+      self.x - Island.sprite:getWidth() / 2,
+      self.y - 20,
+      (self.health / 100) * Island.sprite:getWidth(),
+      4
+    )
   end
 
   love.graphics.pop()

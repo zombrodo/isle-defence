@@ -33,6 +33,19 @@ function BuildType.randomSpawn()
   return spawnableLocations[love.math.random(1, #spawnableLocations)]
 end
 
+local health = {
+  [BuildType.Farm] = true,
+  [BuildType.Hemp] = true,
+  [BuildType.Tower] = true,
+  [BuildType.House] = true,
+  [BuildType.Woodcutter] = true,
+  [BuildType.Mine] = true
+}
+
+function BuildType.hasHealth(buildType)
+  return health[buildType] == true
+end
+
 function BuildType.sprite(buildType)
   return sprites[buildType]
 end

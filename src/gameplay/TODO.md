@@ -21,7 +21,16 @@ TODO
 
 * [ ] Timing
 * [ ] Audio
-* [ ] Particle Effects
+* [x] Particle Effects
 
 * [ ] Menus
 
+---
+
+BUGS
+
+* [] Red Screen when Connecting
+* [] Able to hover over two islands
+* [] Physics Bug
+* [] Shouldn't be able to build on already built
+* [] Shouldn't be able to right click unattached island

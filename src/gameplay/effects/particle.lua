@@ -14,7 +14,7 @@ end
 function Particle.smoke(colour)
   local ps = love.graphics.newParticleSystem(Particle.particle)
   ps:setParticleLifetime(1, 2)
-  ps:setEmissionRate(100)
+  ps:setEmissionRate(10)
   ps:setSizeVariation(1)
   ps:setLinearAcceleration(0, -10, 0, -10)
   ps:setRadialAcceleration(-math.pi, math.pi)
