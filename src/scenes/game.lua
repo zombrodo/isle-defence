@@ -94,8 +94,15 @@ function GameScene:update(dt)
     enemy:update(dt)
   end
 
-  self.map:update(dt, self.tooltip.isOpen)
   self.map:updateEnemies(dt, self.enemies)
+
+  for i = #self.enemies, 1, -1 do
+    if not self.enemies[i].alive then
+      table.remove(self.enemies, i)
+    end
+  end
+
+  self.map:update(dt, self.tooltip.isOpen)
 end
 
 function GameScene:draw()

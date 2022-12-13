@@ -50,6 +50,24 @@ function Tower:fire()
 
 end
 
+function Tower:check(enemies)
+  for i, shot in ipairs(self.shots) do
+    for j, enemy in ipairs(enemies) do
+      if enemy:collides(shot.x, shot.y) then
+        print(shot.x, shot.y)
+        shot.alive = false
+        enemy.health = enemy.health - 1
+
+
+        if enemy.health <= 0 then
+          enemy.alive = false
+          self.currentEnemy = nil
+        end
+      end
+    end
+  end
+end
+
 function Tower:update(dt, enemies)
   self.x = self.island.x
   self.y = self.island.y
@@ -69,6 +87,8 @@ function Tower:update(dt, enemies)
     self:fire()
     self.shootTimer = 0
   end
+
+  self:check(enemies)
 
   for i = #self.shots, 1, -1 do
     self.shots[i]:update(dt)

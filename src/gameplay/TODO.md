@@ -11,16 +11,17 @@ TODO
 
 * [x] Towers
 * [x] Enemies
+* [x] Enemy Collisions
 
-* [ ] Enemy Collisions
-
-* [ ] Spawning
+* [ ] Enemy AI
+* [ ] Enemy Damage
 
 * [ ] Clearing Tiles
 * [ ] Costing
 
 * [ ] Timing
 * [ ] Audio
+* [ ] Particle Effects
 
 * [ ] Menus
 
