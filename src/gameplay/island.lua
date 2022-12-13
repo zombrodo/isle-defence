@@ -1,4 +1,4 @@
-local BuildType = require "src.gameplay.buildType"
+local Particle = require "src.gameplay.effects.particle"
 local Build = require "src.gameplay.build"
 local SineGenerator = require "src.utils.sine"
 local Math = require "src.utils.math"
@@ -45,6 +45,11 @@ function Island.new(physics, x, y, buildType)
   self.body:setLinearDamping(0.3)
   -- self.body:setFriction(1)
 
+  self.health = 100
+
+  self.smoke = Particle.smoke()
+  self.fire = Particle.fire()
+
   self.hovered = false
   self.connections = {}
 
@@ -58,6 +63,14 @@ function Island:update(dt, isTooltipOpen)
 
   if isTooltipOpen then
     return
+  end
+
+  if self.health < 50 then
+    self.smoke:update(dt)
+  end
+
+  if self.health <= 0 then
+    self.fire:update(dt)
   end
 
   if Math.circularBounds(self.x, self.y, 16, Screen:getMousePosition()) then
@@ -114,6 +127,15 @@ function Island:draw()
 
   love.graphics.draw(Island.sprite, self.x, self.y, 0, 1, 1, Island.sprite:getWidth() / 2,
     Island.sprite:getHeight() / 2)
+
+  if self.health < 50 and self.health > 0 then
+    self.smoke:draw(
+      self.x,
+      self.y
+    )
+  elseif self.health == 0 then
+    self.fire:draw(self.x, self.y)
+  end
 
   self.build:draw((self.x + Island.szX) - Island.sprite:getWidth() / 2,
     ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8)
