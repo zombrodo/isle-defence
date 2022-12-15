@@ -6,7 +6,7 @@ local Font = require "src.utils.font"
 local TooltipButton = {}
 TooltipButton.__index = TooltipButton
 
-TooltipButton.font = Font.upheaval(24)
+TooltipButton.font = Font.upheaval(16)
 
 function TooltipButton.new(w, h, text, onClick)
   local self = setmetatable({}, TooltipButton)

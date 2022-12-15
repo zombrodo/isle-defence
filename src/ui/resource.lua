@@ -1,3 +1,5 @@
+local Patchy = require "lib.patchy"
+
 local Plan = require "lib.plan"
 local Container = Plan.Container
 
@@ -5,9 +7,11 @@ local Font = require "src.utils.font"
 local Colour = require "src.utils.colour"
 local ResourceType = require "src.gameplay.resourceType"
 
-local font = Font.upheaval(28)
+local font = Font.upheaval(24)
 
 local Resource = Container:extend()
+
+Resource.patch = Patchy.load("assets/ui/panel.9.png")
 
 local function pad(n)
   local p = "00"
@@ -35,9 +39,11 @@ end
 function Resource:draw()
   Resource.super.draw(self)
   love.graphics.push("all")
+  -- Resource.patch:draw(self.x, self.y, self.w, self.h)
   love.graphics.translate(self.x, self.y)
   love.graphics.draw(self.sprite, self.quad, 0, 0, 0, 6, 6)
-  love.graphics.print(pad(self.stockpile:get(self.resourceType)), font, 80, 10, 0, 1, 1, font:getHeight())
+  love.graphics.setColor(Colour.fromHex("#222222"))
+  love.graphics.print(pad(self.stockpile:get(self.resourceType)), font, 60, 14, 0, 1, 1, font:getHeight() / 2)
   love.graphics.pop()
 end
 

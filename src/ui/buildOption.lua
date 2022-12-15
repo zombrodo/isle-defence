@@ -13,8 +13,8 @@ end
 
 function BuildOption:draw()
   love.graphics.push("all")
-  love.graphics.print(self.buildType, self.x + 10, self.y + 10)
-  love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+  BuildOption.super.draw(self)
+  -- love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
   love.graphics.pop()
 end
 

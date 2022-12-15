@@ -108,4 +108,20 @@ function BuildType.produce(buildType)
   return nil, nil
 end
 
+local names = {
+  [BuildType.None] = "None",
+  [BuildType.Farm] = "Farm",
+  [BuildType.House] = "Houses",
+  [BuildType.Forest] = "Forest",
+  [BuildType.Woodcutter] = "Woodcutter",
+  [BuildType.Ore] = "Ore",
+  [BuildType.Mine] = "Mine",
+  [BuildType.Hemp] = "Hemp Farm",
+  [BuildType.Tower] = "Tower"
+}
+
+function BuildType.displayName(buildType)
+  return names[buildType]
+end
+
 return BuildType

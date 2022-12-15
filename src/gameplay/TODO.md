@@ -27,6 +27,8 @@ TODO
 * [ ] Actually Spawning
 
 * [ ] Menus
+* [ ] Tutorial
+* [x] UI Pass
 
 ---
 
@@ -38,3 +40,4 @@ BUGS
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
 * [ ] z-sort entities (mainly shots)
+* [ ] Prevent clearing root.

@@ -4,6 +4,8 @@ local Pixel = require "lib.pixel"
 local Roomy = require "lib.roomy"
 
 local GameScene = require "src.scenes.game"
+local DebugScene = require "src.scenes.debug"
+
 local PubSub = require "src.utils.pubsub"
 
 Events = nil

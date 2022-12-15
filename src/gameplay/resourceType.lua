@@ -31,4 +31,16 @@ function ResourceType.quad(resourceType)
   return quads[resourceType]
 end
 
+local names = {
+  [ResourceType.Wood] = "Wood",
+  [ResourceType.Food] = "Food",
+  [ResourceType.Ore] = "Ore",
+  [ResourceType.People] = "Villagers",
+  [ResourceType.Rope] = "Rope"
+}
+
+function ResourceType.displayName(resourceType)
+  return names[resourceType]
+end
+
 return ResourceType

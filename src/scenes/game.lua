@@ -33,21 +33,13 @@ function GameScene:__stockpileUI()
     Resource:new(Rules.new(), self.stockpile, ResourceType.Rope),
   }
 
-  local panelRules = Rules.new()
-      :addX(Plan.center())
-      :addY(Plan.pixel(10))
-      :addWidth(Plan.relative(0.6))
-      :addHeight(Plan.pixel(60))
-
-  local panel = Panel:new(panelRules)
-
   local stockpileRules = Rules.new()
-      :addX(Plan.center())
+      :addX(Plan.pixel(10))
       :addY(Plan.center())
-      :addWidth(Plan.parent())
-      :addHeight(Plan.pixel(60))
+      :addWidth(Plan.pixel(200))
+      :addHeight(Plan.relative(0.5))
 
-  local stockpile = EvenlySpaced.horizontal(stockpileRules, resources, 10)
+  local stockpile = EvenlySpaced.vertical(stockpileRules, resources, 10)
 
   local buildRules = Rules.new()
       :addX(Plan.max(210))
@@ -56,8 +48,7 @@ function GameScene:__stockpileUI()
       :addHeight(Plan.relative(0.75))
 
   local build = BuildPanel:new(buildRules, self.stockpile)
-  panel:addChild(stockpile)
-  self.ui:addChild(panel)
+  self.ui:addChild(stockpile)
   self.ui:addChild(build)
 end
 

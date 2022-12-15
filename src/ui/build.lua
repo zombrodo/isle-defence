@@ -8,10 +8,13 @@ local EvenlySpaced = require "src.ui.spaced"
 local BuildOption = require "src.ui.buildOption"
 local Build = require "src.gameplay.build"
 local ResourceType = require "src.gameplay.resourceType"
+local BuildButton = require "src.ui.buildButton"
 
 local BuildPanel = Container:extend()
 
 BuildPanel.background = Patchy.load("assets/ui/panel.9.png")
+BuildPanel.optionHeight = 70
+BuildPanel.optionGap = 10
 
 function BuildPanel:new(rules, stockpile)
   local panel = BuildPanel.super.new(self, rules)
@@ -82,7 +85,15 @@ function BuildPanel:spend(buildType, modifier)
 end
 
 local function option(buildType)
-  return BuildOption:new(Rules.new(), buildType)
+  local wrapper = BuildOption:new(Rules.new(), buildType)
+  local rules = Rules.new()
+      :addX(Plan.center())
+      :addY(Plan.center())
+      :addWidth(200)
+      :addHeight(70)
+
+  wrapper:addChild(BuildButton:new(rules, buildType))
+  return wrapper
 end
 
 local function buildOptions(buildType)
@@ -114,12 +125,14 @@ function BuildPanel:set(buildType)
   local opts = buildOptions(buildType)
   if opts then
     self:clearChildren()
+    local totalHeight = #opts * (BuildPanel.optionHeight + BuildPanel.optionGap)
+    print(self.rules:addHeight(totalHeight))
     local options = EvenlySpaced.vertical(
       Rules.new()
       :addX(Plan.pixel(0))
       :addY(Plan.pixel(0))
       :addWidth(Plan.max())
-      :addHeight(Plan.max()),
+      :addHeight(totalHeight),
       opts,
       10
     )
@@ -133,7 +146,6 @@ end
 function BuildPanel:draw()
   love.graphics.push("all")
   if self.visible then
-    BuildPanel.background:draw(self.x, self.y, self.w, self.h)
     BuildPanel.super.draw(self)
   end
   love.graphics.pop()
