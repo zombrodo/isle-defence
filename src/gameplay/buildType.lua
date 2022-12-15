@@ -35,6 +35,38 @@ local spawnableLocations = {
   BuildType.Ore,
 }
 
+local costs = {
+  [BuildType.Farm] = {
+    [ResourceType.Wood] = 10,
+    [ResourceType.People] = 2
+  },
+  [BuildType.Hemp] = {
+    [ResourceType.Wood] = 10,
+    [ResourceType.People] = 2
+  },
+  [BuildType.Mine] = {
+    [ResourceType.Wood] = 10,
+    [ResourceType.People] = 3
+  },
+  [BuildType.Woodcutter] = {
+    [ResourceType.Wood] = 10,
+    [ResourceType.People] = 3
+  },
+  [BuildType.House] = {
+    [ResourceType.Wood] = 20,
+    [ResourceType.Ore] = 5
+  },
+  [BuildType.Tower] = {
+    [ResourceType.Ore] = 10,
+    [ResourceType.Wood] = 10,
+    [ResourceType.People] = 5,
+  }
+}
+
+function BuildType.cost(buildType)
+  return costs[buildType]
+end
+
 function BuildType.randomSpawn()
   return spawnableLocations[love.math.random(1, #spawnableLocations)]
 end

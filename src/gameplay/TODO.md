@@ -18,7 +18,7 @@ TODO
 
 * [x] Clearing Tiles
 * [x] Repairing
-* [ ] Costing
+* [x] Costing
 
 * [ ] Timing
 * [ ] Audio
@@ -37,3 +37,4 @@ BUGS
 * [] Physics Bug
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
+* [ ] z-sort entities (mainly shots)

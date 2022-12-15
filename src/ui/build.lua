@@ -27,7 +27,13 @@ function BuildPanel:new(rules, stockpile)
   end)
 
   Events:subscribe("buildPanel/build", function(buildType)
-    panel.island.build = Build.new(buildType, panel.island)
+    if panel:canBuild(buildType) then
+      panel.island.build = Build.new(buildType, panel.island)
+      panel:spend(buildType)
+      if buildType == BuildType.House then
+        panel.stockpile:add(ResourceType.People, 10)
+      end
+    end
   end)
 
   Events:subscribe("buildPanel/clear", function(island)
@@ -43,6 +49,7 @@ function BuildPanel:new(rules, stockpile)
   end)
 
   Events:subscribe("buildPanel/repair", function(island)
+    panel:spend(island.build.buildType, island.health / 100)
     island.health = 100
   end)
 
@@ -53,6 +60,25 @@ function BuildPanel:new(rules, stockpile)
   end)
 
   return panel
+end
+
+function BuildPanel:canBuild(buildType, modifier)
+  local cost = BuildType.cost(buildType)
+  local mod = modifier or 1
+  for resource, amount in pairs(cost) do
+    if not self.stockpile:has(resource, math.floor(amount * mod)) then
+      return false
+    end
+  end
+  return true
+end
+
+function BuildPanel:spend(buildType, modifier)
+  local cost = BuildType.cost(buildType)
+  local mod = modifier or 1
+  for resource, amount in pairs(cost) do
+    self.stockpile:remove(resource, math.floor(amount * mod))
+  end
 end
 
 local function option(buildType)
