@@ -55,7 +55,7 @@ function GameScene:__stockpileUI()
       :addWidth(Plan.pixel(200))
       :addHeight(Plan.relative(0.75))
 
-  local build = BuildPanel:new(buildRules)
+  local build = BuildPanel:new(buildRules, self.stockpile)
   panel:addChild(stockpile)
   self.ui:addChild(panel)
   self.ui:addChild(build)
@@ -73,7 +73,7 @@ function GameScene:enter()
   self.ui = Plan.new()
   self.stockpile = Stockpile.new()
   self:__stockpileUI()
-  self.tooltip = Tooltip.new(180, 40)
+  self.tooltip = Tooltip.new(self.map, 180, 40)
 
   self.currentConnector = nil
 end

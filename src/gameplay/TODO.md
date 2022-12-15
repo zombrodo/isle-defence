@@ -16,8 +16,8 @@ TODO
 * [x] Enemy AI
 * [x] Enemy Damage
 
-* [ ] Clearing Tiles
-* [ ] Repairing
+* [x] Clearing Tiles
+* [x] Repairing
 * [ ] Costing
 
 * [ ] Timing
@@ -35,5 +35,5 @@ BUGS
 * [x] Red Screen when Connecting
 * [] Able to hover over two islands
 * [] Physics Bug
-* [] Shouldn't be able to build on already built
-* [] Shouldn't be able to right click unattached island
+* [x] Shouldn't be able to build on already built
+* [x] Shouldn't be able to right click unattached island

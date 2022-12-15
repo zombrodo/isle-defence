@@ -7,6 +7,7 @@ local BuildType = require "src.gameplay.buildType"
 local EvenlySpaced = require "src.ui.spaced"
 local BuildOption = require "src.ui.buildOption"
 local Build = require "src.gameplay.build"
+local ResourceType = require "src.gameplay.resourceType"
 
 local BuildPanel = Container:extend()
 
@@ -27,6 +28,22 @@ function BuildPanel:new(rules, stockpile)
 
   Events:subscribe("buildPanel/build", function(buildType)
     panel.island.build = Build.new(buildType, panel.island)
+  end)
+
+  Events:subscribe("buildPanel/clear", function(island)
+    if island.build.buildType == BuildType.Forest then
+      panel.stockpile:add(ResourceType.Wood, 15)
+    end
+
+    if island.build.buildType == BuildType.Ore then
+      panel.stockpile:add(ResourceType.Ore, 15)
+    end
+
+    island.build = Build.new(BuildType.None, island)
+  end)
+
+  Events:subscribe("buildPanel/repair", function(island)
+    island.health = 100
   end)
 
   Events:subscribe("buildPanel/hide", function()
