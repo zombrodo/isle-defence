@@ -25,7 +25,13 @@ local sprites = {
 
 local spawnableLocations = {
   BuildType.None,
+  BuildType.None,
+  BuildType.None,
+  BuildType.None,
   BuildType.Forest,
+  BuildType.Forest,
+  BuildType.Forest,
+  BuildType.Ore,
   BuildType.Ore,
 }
 

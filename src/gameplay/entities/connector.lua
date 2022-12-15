@@ -96,6 +96,7 @@ function Connector:canConnect(stockpile)
 end
 
 function Connector:drawCost(stockpile)
+  love.graphics.push("all")
   local mx, my = Screen:getMousePosition()
   local amount = math.floor(
     MathUtils.distance(self.parent.x, self.parent.y, mx, my) / 10
@@ -123,7 +124,7 @@ function Connector:drawCost(stockpile)
   end
 
   love.graphics.print(amount, Connector.font, halfX + 32, halfY)
-
+  love.graphics.pop()
 end
 
 return Connector

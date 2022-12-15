@@ -57,7 +57,7 @@ function GameScene:__stockpileUI()
 
   local build = BuildPanel:new(buildRules)
   panel:addChild(stockpile)
-  -- self.ui:addChild(panel)
+  self.ui:addChild(panel)
   self.ui:addChild(build)
 end
 

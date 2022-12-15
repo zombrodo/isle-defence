@@ -75,6 +75,10 @@ function Tower:update(dt, enemies)
     self:find(enemies)
   end
 
+  if self.currentEnemy and self.currentEnemy.health == 0 then
+    self.currentEnemy = nil
+  end
+
   -- If still none, then break out
   if not self.currentEnemy then
     return

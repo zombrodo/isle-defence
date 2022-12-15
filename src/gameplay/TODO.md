@@ -13,15 +13,18 @@ TODO
 * [x] Enemies
 * [x] Enemy Collisions
 
-* [ ] Enemy AI
-* [ ] Enemy Damage
+* [x] Enemy AI
+* [x] Enemy Damage
 
 * [ ] Clearing Tiles
+* [ ] Repairing
 * [ ] Costing
 
 * [ ] Timing
 * [ ] Audio
 * [x] Particle Effects
+
+* [ ] Actually Spawning
 
 * [ ] Menus
 
@@ -29,7 +32,7 @@ TODO
 
 BUGS
 
-* [] Red Screen when Connecting
+* [x] Red Screen when Connecting
 * [] Able to hover over two islands
 * [] Physics Bug
 * [] Shouldn't be able to build on already built
