@@ -16,6 +16,8 @@ local Tooltip = require "src.ui.tooltip"
 local Panel = require "src.ui.panel"
 local BuildPanel = require "src.ui.build"
 
+local Timer = require "src.ui.timer"
+
 local GameScene = {}
 GameScene.__index = GameScene
 
@@ -47,9 +49,18 @@ function GameScene:__stockpileUI()
       :addWidth(Plan.pixel(200))
       :addHeight(Plan.relative(0.75))
 
+  local timerRules = Rules.new()
+      :addX(Plan.center())
+      :addY(Plan.pixel(10))
+      :addHeight(Plan.pixel(20))
+      :addWidth(Plan.relative(0.6))
+
+  self.timer = Timer:new(timerRules)
+
   local build = BuildPanel:new(buildRules, self.stockpile)
   self.ui:addChild(stockpile)
   self.ui:addChild(build)
+  self.ui:addChild(self.timer)
 end
 
 function GameScene:enter()
