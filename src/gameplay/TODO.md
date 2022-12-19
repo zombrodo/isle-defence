@@ -20,24 +20,28 @@ TODO
 * [x] Repairing
 * [x] Costing
 
-* [ ] Timing
+* [x] Timing
 * [ ] Audio
 * [x] Particle Effects
 
-* [ ] Actually Spawning
+* [x] Actually Spawning
 
 * [ ] Menus
 * [ ] Tutorial
 * [x] UI Pass
 
+* [ ] Food
+
 ---
 
 BUGS
-
+* [ ] Unbalanced
 * [x] Red Screen when Connecting
-* [] Able to hover over two islands
-* [] Physics Bug
+* [ ] Able to hover over two islands
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
 * [ ] z-sort entities (mainly shots)
 * [ ] Prevent clearing root.
+* [ ] Build origin on Islands
+* [ ] Weird Pairs error
+* [ ] Unable to close Build menu

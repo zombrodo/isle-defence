@@ -19,6 +19,6 @@ function Font.register(id, path)
   end
 end
 
-Font.register("upheaval", "assets/fonts/upheaval.ttf")
+Font.register("upheaval", "assets/fonts/fibberish.ttf")
 
 return Font

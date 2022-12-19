@@ -53,10 +53,36 @@ function Island.new(physics, x, y, buildType)
   self.hovered = false
   self.connections = {}
 
+  self.fadeOut = false
+  self.fade = nil
+  self.opacity = 1
+  self.shouldRemove = false
+
+  self.creationTime = love.timer.getTime()
+
   return self
 end
 
+function Island:release()
+  self.body:destroy()
+end
+
 function Island:update(dt, isTooltipOpen)
+  if love.timer.getTime() - self.creationTime >= 10
+      and #self.connections == 0
+      and not self.fadeOut then
+    self.fadeOut = true
+    self.fade = Flux.to(self, 5, { opacity = 0 }):oncomplete(function()
+      self.shouldRemove = true
+    end)
+  end
+
+  if self.fadeOut and self.fade and #self.connections > 0 then
+    self.opacity = 1
+    self.fadeOut = false
+    self.fade:stop()
+  end
+
   self.x, self.y = self.body:getPosition()
 
   self.build:update(dt)
@@ -126,9 +152,10 @@ end
 function Island:draw()
   love.graphics.push("all")
   love.graphics.translate(0, self.bob:getValue())
+  love.graphics.setColor(1, 1, 1, self.opacity)
 
   if self.hovered then
-    love.graphics.draw(Island.hovered, self.x, self.y, 0, 1, 1, Island.hovered:getWidth() / 2,
+    love.graphics.draw(Island.hovered, self.x, self.y, 0, self.opacity, self.opacity, Island.hovered:getWidth() / 2,
       Island.hovered:getHeight() / 2)
 
     if self.build:isTower() then
@@ -140,7 +167,7 @@ function Island:draw()
     end
   end
 
-  love.graphics.draw(Island.sprite, self.x, self.y, 0, 1, 1, Island.sprite:getWidth() / 2,
+  love.graphics.draw(Island.sprite, self.x, self.y, 0, self.opacity, self.opacity, Island.sprite:getWidth() / 2,
     Island.sprite:getHeight() / 2)
 
   if self.health < 50 and self.health > 0 then
@@ -152,11 +179,12 @@ function Island:draw()
     self.fire:draw(self.x, self.y)
   end
 
-  self.build:draw((self.x + Island.szX) - Island.sprite:getWidth() / 2,
-    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8)
+  self.build:draw(
+    (self.x + Island.szX) - Island.sprite:getWidth() / 2,
+    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0)
 
-  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#222222"), 0.2))
-  love.graphics.ellipse("fill", self.x, self.y + 30, 15, 8)
+  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#222222"), 0.2 * self.opacity))
+  love.graphics.ellipse("fill", self.x, self.y + 30, 15 * self.opacity, 8 * self.opacity)
 
   for i, connection in ipairs(self.connections) do
     if connection.parent == self then

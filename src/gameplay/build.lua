@@ -38,10 +38,10 @@ function Build:hasHealth()
   return BuildType.hasHealth(self.buildType)
 end
 
-function Build:draw(x, y, r)
+function Build:draw(x, y, r, sx, sy)
   love.graphics.push("all")
   if self.buildType ~= BuildType.None then
-    love.graphics.draw(BuildType.sprite(self.buildType), x, y, r)
+    love.graphics.draw(BuildType.sprite(self.buildType), x, y, r, sx, sy)
   end
 
   if self.buildType == BuildType.Tower then

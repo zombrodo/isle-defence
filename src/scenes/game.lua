@@ -16,7 +16,8 @@ local Tooltip = require "src.ui.tooltip"
 local Panel = require "src.ui.panel"
 local BuildPanel = require "src.ui.build"
 
-local Timer = require "src.ui.timer"
+-- local Timer = require "src.ui.timer"
+local Wave = require "src.ui.wave"
 
 local GameScene = {}
 GameScene.__index = GameScene
@@ -55,7 +56,7 @@ function GameScene:__stockpileUI()
       :addHeight(Plan.pixel(20))
       :addWidth(Plan.relative(0.6))
 
-  self.timer = Timer:new(timerRules)
+  self.timer = Wave:new(timerRules)
 
   local build = BuildPanel:new(buildRules, self.stockpile)
   self.ui:addChild(stockpile)
@@ -68,8 +69,18 @@ function GameScene:enter()
   self.islandSpawner = IslandSpawner.new(self.physics)
   self.map = Map.new(self.physics)
 
+  Events:subscribe("wave/second", function(t)
+    if t % 2 == 0 then
+      self.map:addIsland(self.islandSpawner:spawn())
+    end
+  end)
+
   self.enemySpawner = EnemySpawner.new(self.physics, self.map)
   self.enemies = {}
+
+  Events:subscribe("wave/next", function(n)
+    self:spawnWave(n)
+  end)
 
   -- UI
   self.ui = Plan.new()
@@ -79,6 +90,18 @@ function GameScene:enter()
 
   self.currentConnector = nil
 end
+
+function GameScene:spawnWave(n)
+  print("spawning", n)
+  for i = 1, n do
+    table.insert(self.enemies, self.enemySpawner:spawn(
+      GAME_WIDTH + love.math.random(10, 20),
+      love.math.random(0, GAME_HEIGHT)
+    ))
+  end
+end
+
+
 
 function GameScene:update(dt)
   self.physics:update(dt)
@@ -133,14 +156,14 @@ function GameScene:drawUI()
 end
 
 function GameScene:keypressed(key)
-  if key == "p" then
-    self.map:addIsland(self.islandSpawner:spawn())
-  end
+  -- if key == "p" then
+  --   self.map:addIsland(self.islandSpawner:spawn())
+  -- end
 
-  if key == "e" then
-    local mx, my = Screen:getMousePosition()
-    table.insert(self.enemies, self.enemySpawner:spawn(mx, my))
-  end
+  -- if key == "e" then
+  --   local mx, my = Screen:getMousePosition()
+  --   table.insert(self.enemies, self.enemySpawner:spawn(mx, my))
+  -- end
 end
 
 function GameScene:attachConnector(island)

@@ -2,6 +2,7 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 
 local Pixel = require "lib.pixel"
 local Roomy = require "lib.roomy"
+Flux = require "lib.flux"
 
 local GameScene = require "src.scenes.game"
 local DebugScene = require "src.scenes.debug"
@@ -33,6 +34,7 @@ function love.load()
 end
 
 function love.update(dt)
+  Flux.update(dt)
 end
 
 function love.draw()

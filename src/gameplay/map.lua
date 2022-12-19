@@ -31,6 +31,16 @@ function Map:update(dt, isTooltipOpen)
   for i, island in ipairs(self.islands) do
     island:update(dt, isTooltipOpen)
   end
+
+  for i = #self.islands, 1, -1 do
+    local island = self.islands[i]
+    island:update(dt, isTooltipOpen)
+    if island.shouldRemove then
+      print("removing")
+      table.remove(self.islands, i)
+    end
+  end
+
   self:refreshDrawOrder()
 end
 

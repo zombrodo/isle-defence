@@ -7,6 +7,7 @@ function EnemySpawner.new(physics, map)
   local self = setmetatable({}, EnemySpawner)
   self.physics = physics
   self.map = map
+
   return self
 end
 
