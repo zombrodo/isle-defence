@@ -57,6 +57,7 @@ function Island.new(physics, x, y, buildType)
   self.fade = nil
   self.opacity = 1
   self.shouldRemove = false
+  self.static = false
 
   self.creationTime = love.timer.getTime()
 
@@ -68,19 +69,23 @@ function Island:release()
 end
 
 function Island:update(dt, isTooltipOpen)
-  if love.timer.getTime() - self.creationTime >= 10
-      and #self.connections == 0
-      and not self.fadeOut then
-    self.fadeOut = true
-    self.fade = Flux.to(self, 5, { opacity = 0 }):oncomplete(function()
-      self.shouldRemove = true
-    end)
-  end
 
-  if self.fadeOut and self.fade and #self.connections > 0 then
-    self.opacity = 1
-    self.fadeOut = false
-    self.fade:stop()
+  if not self.static then
+    if love.timer.getTime() - self.creationTime >= 10
+        and #self.connections == 0
+        and not self.fadeOut
+    then
+      self.fadeOut = true
+      self.fade = Flux.to(self, 5, { opacity = 0 }):oncomplete(function()
+        self.shouldRemove = true
+      end)
+    end
+
+    if self.fadeOut and self.fade and #self.connections > 0 then
+      self.opacity = 1
+      self.fadeOut = false
+      self.fade:stop()
+    end
   end
 
   self.x, self.y = self.body:getPosition()

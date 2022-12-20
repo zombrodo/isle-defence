@@ -26,7 +26,7 @@ TODO
 
 * [x] Actually Spawning
 
-* [ ] Menus
+* [x] Menu
 * [ ] Tutorial
 * [x] UI Pass
 
@@ -41,7 +41,8 @@ BUGS
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
 * [ ] z-sort entities (mainly shots)
-* [ ] Prevent clearing root.
+* [x] Prevent clearing root.
 * [ ] Build origin on Islands
 * [ ] Weird Pairs error
 * [ ] Unable to close Build menu
+* [ ] Replace #222 with Palette

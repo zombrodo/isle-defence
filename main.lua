@@ -5,7 +5,7 @@ local Roomy = require "lib.roomy"
 Flux = require "lib.flux"
 
 local GameScene = require "src.scenes.game"
-local DebugScene = require "src.scenes.debug"
+local MenuScene = require "src.scenes.menu"
 
 local PubSub = require "src.utils.pubsub"
 
@@ -30,7 +30,7 @@ function love.load()
 
   SceneManager = Roomy.new()
   SceneManager:hook({ exclude = { "draw" } })
-  SceneManager:enter(GameScene.new())
+  SceneManager:enter(MenuScene.new())
 end
 
 function love.update(dt)

@@ -11,6 +11,7 @@ function Map.new(physics)
   self.physics = physics
 
   self.root = Island.new(physics, GAME_WIDTH / 2, GAME_HEIGHT / 2, BuildType.House)
+  self.root.static = true
   self.root.body:setType("static")
 
   self.islands = { self.root }
