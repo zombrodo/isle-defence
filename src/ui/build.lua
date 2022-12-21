@@ -35,6 +35,7 @@ function BuildPanel:new(rules, stockpile)
       panel:spend(buildType)
       if buildType == BuildType.House then
         panel.stockpile:add(ResourceType.People, 10)
+        panel.stockpile:add(ResourceType.Villagers, 10)
       end
     end
   end)

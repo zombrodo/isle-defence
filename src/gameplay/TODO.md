@@ -21,16 +21,15 @@ TODO
 * [x] Costing
 
 * [x] Timing
-* [ ] Audio
+* [x] Audio
 * [x] Particle Effects
 
 * [x] Actually Spawning
 
 * [x] Menu
-* [ ] Tutorial
 * [x] UI Pass
 
-* [ ] Food
+* [x] Food
 
 ---
 

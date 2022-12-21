@@ -10,6 +10,7 @@ function Stockpile.new()
     [ResourceType.Food] = 50,
     [ResourceType.Ore] = 0,
     [ResourceType.People] = 10,
+    [ResourceType.Villagers] = 10,
     [ResourceType.Rope] = 30
   }
 

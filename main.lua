@@ -6,9 +6,11 @@ Flux = require "lib.flux"
 
 local GameScene = require "src.scenes.game"
 local MenuScene = require "src.scenes.menu"
+local TutorialScene = require "src.scenes.tutorial"
 
 local PubSub = require "src.utils.pubsub"
 
+Audio = require "src.utils.audio"
 Events = nil
 
 SceneManager = nil

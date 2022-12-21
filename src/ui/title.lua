@@ -3,6 +3,7 @@ local Container = Plan.Container
 
 local Font = require "src.utils.font"
 local SineGenerator = require "src.utils.sine"
+local Colour = require "src.utils.colour"
 
 local Title = Container:extend()
 
@@ -20,7 +21,7 @@ end
 
 function Title:draw()
   love.graphics.push("all")
-  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setColor(Colour.fromHex("#202e37"))
   love.graphics.translate(0, self.sine:getValue())
   love.graphics.print(
     self.text,

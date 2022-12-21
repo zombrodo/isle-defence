@@ -15,6 +15,7 @@ local EvenlySpaced = require "src.ui.spaced"
 local Map = require "src.gameplay.map"
 
 local GameScene = require "src.scenes.game"
+local TutorialScene = require "src.scenes.tutorial"
 
 local MenuScene = {}
 MenuScene.__index = MenuScene
@@ -32,7 +33,7 @@ function MenuScene:enter()
 
   local buttons = {
     Button:new(Rules.new(), "Play", function() SceneManager:enter(GameScene.new()) end),
-    Button:new(Rules.new(), "Tutorial", function() end),
+    -- Button:new(Rules.new(), "Tutorial", function() SceneManager:enter(TutorialScene.new()) end),
     Button:new(Rules.new(), "Quit", function() love.event.quit() end),
   }
 
@@ -49,18 +50,18 @@ function MenuScene:enter()
   )
 
   local titleRules = Rules.new()
-    :addX(Plan.center())
-    :addY(Plan.pixel(0))
-    :addWidth(Plan.max())
-    :addHeight(Plan.relative(0.1))
+      :addX(Plan.center())
+      :addY(Plan.pixel(0))
+      :addWidth(Plan.max())
+      :addHeight(Plan.relative(0.1))
 
   local title = Title:new(titleRules, "Isle Defence")
 
   local containerRules = Rules.new()
-    :addX(Plan.center())
-    :addY(Plan.center())
-    :addWidth(Plan.relative(0.3))
-    :addHeight(Plan.relative(0.5))
+      :addX(Plan.center())
+      :addY(Plan.center())
+      :addWidth(Plan.relative(0.3))
+      :addHeight(Plan.relative(0.5))
 
   local container = Container:new(containerRules)
 

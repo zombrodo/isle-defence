@@ -33,6 +33,7 @@ function GameScene:__stockpileUI()
     Resource:new(Rules.new(), self.stockpile, ResourceType.Food),
     Resource:new(Rules.new(), self.stockpile, ResourceType.Ore),
     Resource:new(Rules.new(), self.stockpile, ResourceType.People),
+    Resource:new(Rules.new(), self.stockpile, ResourceType.Villagers),
     Resource:new(Rules.new(), self.stockpile, ResourceType.Rope),
   }
 
@@ -88,7 +89,24 @@ function GameScene:enter()
   self:__stockpileUI()
   self.tooltip = Tooltip.new(self.map, 180, 40)
 
+  self.lost = false
+
   self.currentConnector = nil
+  Audio.load("connect", "assets/audio/rope-connect.mp3")
+  Audio.load("enemy", "assets/audio/battle-horn.mp3")
+  Audio.load("bg", "assets/audio/Angevin.mp3")
+  Audio.play("bg")
+
+  Events:subscribe("wave/next", function()
+    Audio.play("enemy")
+  end)
+
+  self.timer = 0
+  self.every = 5
+end
+
+function GameScene:exit()
+  Audio.__cache["bg"]:stop()
 end
 
 function GameScene:spawnWave(n)
@@ -101,9 +119,12 @@ function GameScene:spawnWave(n)
   end
 end
 
-
-
 function GameScene:update(dt)
+  if self.lost then
+    error("YOU'RE DEAD, JIM")
+  end
+
+
   self.physics:update(dt)
   self.ui:update(dt)
 
@@ -125,6 +146,20 @@ function GameScene:update(dt)
     if not self.enemies[i].alive then
       table.remove(self.enemies, i)
     end
+  end
+
+  self.timer = self.timer + dt
+
+  if self.timer >= self.every then
+    self.stockpile:remove(
+      ResourceType.Food,
+      math.floor(self.stockpile:get(ResourceType.Villagers) / 2)
+    )
+    self.timer = 0
+  end
+
+  if self.stockpile:get(ResourceType.Food) <= 0 then
+    self.lost = true
   end
 
   self.map:update(dt, self.tooltip.isOpen)
@@ -156,14 +191,6 @@ function GameScene:drawUI()
 end
 
 function GameScene:keypressed(key)
-  -- if key == "p" then
-  --   self.map:addIsland(self.islandSpawner:spawn())
-  -- end
-
-  -- if key == "e" then
-  --   local mx, my = Screen:getMousePosition()
-  --   table.insert(self.enemies, self.enemySpawner:spawn(mx, my))
-  -- end
 end
 
 function GameScene:attachConnector(island)
@@ -177,6 +204,7 @@ function GameScene:attachConnector(island)
 
   if self.currentConnector:isComplete() then
     self.stockpile:remove(ResourceType.Rope, self.currentConnector:getCost())
+    Audio.play("connect")
     self.currentConnector = nil
   end
 end
