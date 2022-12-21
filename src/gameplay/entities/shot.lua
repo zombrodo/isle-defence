@@ -29,7 +29,7 @@ end
 
 function Shot:draw()
   love.graphics.push("all")
-  love.graphics.setColor(Colour.fromHex("#222222"))
+  love.graphics.setColor(Colour.fromHex("#202e37"))
   love.graphics.circle("fill", self.x, self.y, self.size)
   love.graphics.pop()
 end

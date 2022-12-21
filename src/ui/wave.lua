@@ -2,10 +2,11 @@ local Plan = require "lib.plan"
 local Container = Plan.Container
 
 local Fonts = require "src.utils.font"
+local Colour = require "src.utils.colour"
 
 local Wave = Container:extend()
 
-Wave.font = Fonts.upheaval(32)
+Wave.font = Fonts.upheaval(48)
 Wave.fontSmaller = Fonts.upheaval(24)
 Wave.icon = love.graphics.newImage("assets/ships/enemy.png")
 
@@ -35,9 +36,29 @@ end
 
 function Wave:draw()
   love.graphics.push("all")
-  love.graphics.print(string.format("Next Wave (wave %d) in %.0f", self.currentWave, self.tick - self.timer), Wave.font, self.x, self.y, 0, 1, 1, 0)
-  love.graphics.draw(Wave.icon, self.x, self.y + Wave.font:getHeight(), 0, 2, 2)
-  love.graphics.print("x " .. self.enemies, Wave.fontSmaller, self.x + Wave.icon:getWidth() * 2, self.y + Wave.font:getHeight())
+  love.graphics.setColor(Colour.fromHex("#202e37"))
+  local content = string.format("Wave %d in %.0f", self.currentWave, self.tick - self.timer)
+  love.graphics.print(
+    content,
+    Wave.font,
+    self.x + self.w / 2,
+    self.y + self.h / 2,
+    0, 1, 1,
+    Wave.font:getWidth(content) / 2,
+    Wave.font:getHeight() / 2
+  )
+
+  local smallContent = string.format("(%d expected)", self.enemies)
+
+  love.graphics.print(
+    string.format("(%d expected)", self.enemies),
+    Wave.fontSmaller,
+    (self.x + self.w / 2),
+    (self.y + Wave.font:getHeight()),
+    0, 1, 1,
+    Wave.fontSmaller:getWidth(smallContent) / 2,
+    Wave.fontSmaller:getHeight() / 2
+  )
   love.graphics.pop()
 end
 

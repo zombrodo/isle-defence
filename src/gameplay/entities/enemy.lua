@@ -149,7 +149,7 @@ function Enemy:draw()
     shot:draw()
   end
 
-  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#222222"), 0.2))
+  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#202e37"), 0.2))
   love.graphics.ellipse("fill", self.x, self.y + 30, 6, 3)
   love.graphics.pop()
 end

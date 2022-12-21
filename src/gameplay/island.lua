@@ -3,6 +3,7 @@ local Build = require "src.gameplay.build"
 local SineGenerator = require "src.utils.sine"
 local Math = require "src.utils.math"
 local Colour = require "src.utils.colour"
+local DashedCircle = require "src.utils.dashedCircle"
 
 local Island = {}
 Island.__index = Island
@@ -23,7 +24,7 @@ Island.collY = 8
 
 Island.towerRange = Colour.fromHex("#253a5e")
 
-Island.guidelineColour = Colour.withAlpha(Colour.fromHex("#222222"), 0.5)
+Island.guidelineColour = Colour.withAlpha(Colour.fromHex("#202e37"), 0.5)
 
 function Island.new(physics, x, y, buildType)
   local self = setmetatable({}, Island)
@@ -58,6 +59,8 @@ function Island.new(physics, x, y, buildType)
   self.opacity = 1
   self.shouldRemove = false
   self.static = false
+
+  self.range = DashedCircle.new(60)
 
   self.creationTime = love.timer.getTime()
 
@@ -167,7 +170,7 @@ function Island:draw()
       love.graphics.setColor(Colour.withAlpha(Island.towerRange, 0.5))
       love.graphics.circle("fill", self.x, self.y, 120)
       love.graphics.setColor(Island.towerRange)
-      love.graphics.circle("line", self.x, self.y, 120)
+      self.range:draw(self.x, self.y, 120)
       love.graphics.setColor(1, 1, 1, 1)
     end
   end
@@ -188,7 +191,7 @@ function Island:draw()
     (self.x + Island.szX) - Island.sprite:getWidth() / 2,
     ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0)
 
-  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#222222"), 0.2 * self.opacity))
+  love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#202e37"), 0.2 * self.opacity))
   love.graphics.ellipse("fill", self.x, self.y + 30, 15 * self.opacity, 8 * self.opacity)
 
   for i, connection in ipairs(self.connections) do
@@ -203,7 +206,7 @@ function Island:draw()
   end
 
   if self.hovered and self.build:hasHealth() then
-    love.graphics.setColor(Colour.fromHex("#222222"))
+    love.graphics.setColor(Colour.fromHex("#202e37"))
     love.graphics.rectangle(
       "fill",
       (self.x - Island.sprite:getWidth() / 2) - 1,

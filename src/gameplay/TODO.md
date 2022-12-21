@@ -46,3 +46,4 @@ BUGS
 * [ ] Weird Pairs error
 * [ ] Unable to close Build menu
 * [ ] Replace #222 with Palette
+* [ ] Damaged Items shouldn't produce

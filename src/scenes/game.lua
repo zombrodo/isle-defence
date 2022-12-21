@@ -52,7 +52,7 @@ function GameScene:__stockpileUI()
 
   local timerRules = Rules.new()
       :addX(Plan.center())
-      :addY(Plan.pixel(10))
+      :addY(Plan.pixel(40))
       :addHeight(Plan.pixel(20))
       :addWidth(Plan.relative(0.6))
 
