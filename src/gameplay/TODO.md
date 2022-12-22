@@ -36,7 +36,7 @@ TODO
 
 * [x] Show red text if you cannot afford on build
 * [ ] Error sound effect
-* [ ] Sound/No Sound option
+* [x] Sound/No Sound option
 * [x] Pause
 * [x] Game Over
 * [ ] Tidy Ropes

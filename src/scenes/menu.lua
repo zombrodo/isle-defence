@@ -32,12 +32,34 @@ function MenuScene.new()
   return self
 end
 
+local function toggle(state)
+  if state then
+    return "ON"
+  end
+
+  return "OFF"
+end
+
 function MenuScene:enter()
   self.ui = Plan.new()
 
+  self.musicState = Button:new(Rules.new(), "Music: " .. toggle(Settings.get("BG_MUSIC")), function()
+    local curr = Settings.get("BG_MUSIC")
+    Settings.set("BG_MUSIC", not curr)
+    self.musicState.text = "Music: " .. toggle(not curr)
+
+  end)
+
+  self.soundState = Button:new(Rules.new(), "Sounds: " .. toggle(Settings.get("GAME_SOUNDS")), function()
+    local curr = Settings.get("GAME_SOUNDS")
+    Settings.set("GAME_SOUNDS", not curr)
+    self.soundState.text = "Sounds: " .. toggle(not curr)
+  end)
+
   local buttons = {
     Button:new(Rules.new(), "Play", function() SceneManager:enter(GameScene.new()) end),
-    -- Button:new(Rules.new(), "Tutorial", function() SceneManager:enter(TutorialScene.new()) end),
+    self.musicState,
+    self.soundState,
     Button:new(Rules.new(), "Quit", function() love.event.quit() end),
   }
 
@@ -64,7 +86,7 @@ function MenuScene:enter()
   local containerRules = Rules.new()
       :addX(Plan.center())
       :addY(Plan.center())
-      :addWidth(Plan.relative(0.3))
+      :addWidth(Plan.relative(0.5))
       :addHeight(Plan.relative(0.5))
 
   local container = Container:new(containerRules)

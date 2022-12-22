@@ -102,10 +102,15 @@ function GameScene:enter(previous)
   Audio.load("connect", "assets/audio/rope-connect.mp3")
   Audio.load("enemy", "assets/audio/battle-horn.mp3")
   Audio.load("bg", "assets/audio/Angevin.mp3")
-  Audio.play("bg")
+
+  if Settings.get("BG_MUSIC") then
+    Audio.play("bg")
+  end
 
   Events:subscribe("wave/next", function()
-    Audio.play("enemy")
+    if Settings.get("GAME_SOUNDS") then
+      Audio.play("enemy")
+    end
   end)
 
   self.timer = 0
@@ -126,13 +131,16 @@ function GameScene:gameOver()
   self.ui:removeChild(self.inventory)
 
   local buttonRules = Rules.new()
-    :addX(Plan.center())
-    :addY(Plan.max(80))
-    :addWidth(Plan.pixel(90))
-    :addHeight(Plan.pixel(40))
+      :addX(Plan.center())
+      :addY(Plan.max(80))
+      :addWidth(Plan.pixel(90))
+      :addHeight(Plan.pixel(40))
 
   local button = Button:new(buttonRules, "Menu", function()
-    Audio.__cache["bg"]:stop()
+    if Settings.get("BG_MUSIC") then
+      Audio.__cache["bg"]:stop()
+    end
+
     SceneManager:enter(self.previousScene)
   end)
 
@@ -179,7 +187,7 @@ function GameScene:update(dt)
   end
 
   if self.stockpile:get(ResourceType.Food) <= 0
-    or self.map.root.health == 0 then
+      or self.map.root.health == 0 then
     self:gameOver()
   end
 
@@ -262,7 +270,9 @@ function GameScene:attachConnector(island)
 
   if self.currentConnector:isComplete() then
     self.stockpile:remove(ResourceType.Rope, self.currentConnector:getCost())
-    Audio.play("connect")
+    if Settings.get("GAME_SOUNDS") then
+      Audio.play("connect")
+    end
     self.currentConnector = nil
   end
 end

@@ -11,6 +11,8 @@ local TutorialScene = require "src.scenes.tutorial"
 local PubSub = require "src.utils.pubsub"
 
 Audio = require "src.utils.audio"
+Settings = require "src.utils.settings"
+
 Events = nil
 
 SceneManager = nil
@@ -29,6 +31,15 @@ function love.load()
   )
 
   Events = PubSub.new()
+
+  Settings.load()
+  if not Settings.get("BG_MUSIC") then
+    Settings.set("BG_MUSIC", true)
+  end
+
+  if not Settings.get("GAME_SOUNDS") then
+    Settings.set("GAME_SOUNDS", true)
+  end
 
   SceneManager = Roomy.new()
   SceneManager:hook({ exclude = { "draw" } })
@@ -57,6 +68,10 @@ end
 
 function love.resize()
   Screen:resize()
+end
+
+function love.quit()
+  Settings.save()
 end
 
 function love.keypressed(key)
