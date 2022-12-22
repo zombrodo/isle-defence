@@ -11,7 +11,7 @@ function Build.new(buildType, island)
   if buildType == BuildType.Tower then
     self.tower = Tower.new(island)
   end
-  self.every = 1
+  self.every = 2
   self.timer = 0
   return self
 end

@@ -34,11 +34,11 @@ TODO
 * [ ] Menu UI
 * [x] Shift Stockpile to top.
 
-* [ ] Show red text if you cannot afford on build
+* [x] Show red text if you cannot afford on build
 * [ ] Error sound effect
-* [ ] Sound/No Sound warning
-* [ ] Pause
-* [ ] Game Over
+* [ ] Sound/No Sound option
+* [x] Pause
+* [x] Game Over
 
 ---
 

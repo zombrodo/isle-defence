@@ -86,7 +86,7 @@ function BuildPanel:spend(buildType, modifier)
   end
 end
 
-local function option(buildType)
+function BuildPanel:option(buildType)
   local wrapper = BuildOption:new(Rules.new(), buildType)
   local rules = Rules.new()
       :addX(Plan.center())
@@ -94,29 +94,29 @@ local function option(buildType)
       :addWidth(200)
       :addHeight(70)
 
-  wrapper:addChild(BuildButton:new(rules, buildType))
+  wrapper:addChild(BuildButton:new(rules, buildType, self.stockpile))
   return wrapper
 end
 
-local function buildOptions(buildType)
+function BuildPanel:buildOptions(buildType)
   if buildType == BuildType.None then
     return {
-      option(BuildType.Farm),
-      option(BuildType.Hemp),
-      option(BuildType.House),
-      option(BuildType.Tower)
+      self:option(BuildType.Farm),
+      self:option(BuildType.Hemp),
+      self:option(BuildType.House),
+      self:option(BuildType.Tower)
     }
   end
 
   if buildType == BuildType.Forest then
     return {
-      option(BuildType.Woodcutter)
+      self:option(BuildType.Woodcutter)
     }
   end
 
   if buildType == BuildType.Ore then
     return {
-      option(BuildType.Mine)
+      self:option(BuildType.Mine)
     }
   end
 
@@ -124,7 +124,7 @@ local function buildOptions(buildType)
 end
 
 function BuildPanel:set(buildType)
-  local opts = buildOptions(buildType)
+  local opts = self:buildOptions(buildType)
   if opts then
     self:clearChildren()
     local totalHeight = #opts * (BuildPanel.optionHeight + BuildPanel.optionGap)

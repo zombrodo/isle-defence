@@ -6,6 +6,8 @@ local BuildType = require "src.gameplay.buildType"
 local ResourceType = require "src.gameplay.resourceType"
 local Island = require "src.gameplay.island"
 
+local Colour = require "src.utils.colour"
+
 local Font = require "src.utils.font"
 
 local BuildButton = Container:extend()
@@ -13,10 +15,11 @@ local BuildButton = Container:extend()
 BuildButton.patch = Patchy.load("assets/ui/panel.9.png")
 BuildButton.titleFont = Font.upheaval(18)
 
-function BuildButton:new(rules, buildType)
+function BuildButton:new(rules, buildType, stockpile)
   local button = BuildButton.super.new(self, rules)
   button.buildType = buildType
   button.sprite = BuildType.sprite(buildType)
+  button.stockpile = stockpile
 
   button.buildName = string.lower(BuildType.displayName(buildType))
   button.cost = BuildType.cost(buildType)
@@ -60,6 +63,13 @@ function BuildButton:__resources(x, y)
       2,
       2
     )
+
+    if not self.stockpile:has(resource, amount) then
+      love.graphics.setColor(Colour.fromHex("#a53030"))
+    else
+      love.graphics.setColor(1, 1, 1, 1)
+    end
+
     love.graphics.print(amount, font, x + 18, y)
     y = y + 16
 

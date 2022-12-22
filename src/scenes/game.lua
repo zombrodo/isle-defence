@@ -2,6 +2,7 @@ local Windfield = require "lib.windfield"
 local Plan = require "lib.plan"
 local Rules = Plan.Rules
 
+local Font = require "src.utils.font"
 local Colour = require "src.utils.colour"
 local Map = require "src.gameplay.map"
 local IslandSpawner = require "src.gameplay.spawners.island"
@@ -13,7 +14,7 @@ local Stockpile = require "src.gameplay.stockpile"
 local Resource = require "src.ui.resource"
 local EvenlySpaced = require "src.ui.spaced"
 local Tooltip = require "src.ui.tooltip"
-local Panel = require "src.ui.panel"
+local Button = require "src.ui.button"
 local BuildPanel = require "src.ui.build"
 
 -- local Timer = require "src.ui.timer"
@@ -21,6 +22,8 @@ local Wave = require "src.ui.wave"
 
 local GameScene = {}
 GameScene.__index = GameScene
+
+GameScene.font = Font.upheaval(72)
 
 function GameScene.new()
   local self = setmetatable({}, GameScene)
@@ -43,7 +46,7 @@ function GameScene:__stockpileUI()
       :addWidth(Plan.relative(0.5))
       :addHeight(Plan.pixel(60))
 
-  local stockpile = EvenlySpaced.horizontal(stockpileRules, resources, 10)
+  self.inventory = EvenlySpaced.horizontal(stockpileRules, resources, 10)
 
   local buildRules = Rules.new()
       :addX(Plan.max(210))
@@ -57,15 +60,18 @@ function GameScene:__stockpileUI()
       :addHeight(Plan.pixel(20))
       :addWidth(Plan.relative(0.6))
 
-  self.timer = Wave:new(timerRules)
+  self.waveTimer = Wave:new(timerRules)
 
   local build = BuildPanel:new(buildRules, self.stockpile)
-  self.ui:addChild(stockpile)
+  self.ui:addChild(self.inventory)
   self.ui:addChild(build)
-  self.ui:addChild(self.timer)
+  self.ui:addChild(self.waveTimer)
+
+  print(self.timer)
 end
 
-function GameScene:enter()
+function GameScene:enter(previous)
+  self.previousScene = previous
   self.physics = Windfield.newWorld(0, 0)
   self.islandSpawner = IslandSpawner.new(self.physics)
   self.map = Map.new(self.physics)
@@ -90,6 +96,7 @@ function GameScene:enter()
   self.tooltip = Tooltip.new(self.map, 180, 40)
 
   self.lost = false
+  self.paused = false
 
   self.currentConnector = nil
   Audio.load("connect", "assets/audio/rope-connect.mp3")
@@ -105,12 +112,7 @@ function GameScene:enter()
   self.every = 5
 end
 
-function GameScene:exit()
-  Audio.__cache["bg"]:stop()
-end
-
 function GameScene:spawnWave(n)
-  print("spawning", n)
   for i = 1, n do
     table.insert(self.enemies, self.enemySpawner:spawn(
       GAME_WIDTH + love.math.random(10, 20),
@@ -119,11 +121,29 @@ function GameScene:spawnWave(n)
   end
 end
 
-function GameScene:update(dt)
-  if self.lost then
-    error("YOU'RE DEAD, JIM")
-  end
+function GameScene:gameOver()
+  self.ui:removeChild(self.waveTimer)
+  self.ui:removeChild(self.inventory)
 
+  local buttonRules = Rules.new()
+    :addX(Plan.center())
+    :addY(Plan.max(80))
+    :addWidth(Plan.pixel(90))
+    :addHeight(Plan.pixel(40))
+
+  local button = Button:new(buttonRules, "Menu", function()
+    Audio.__cache["bg"]:stop()
+    SceneManager:enter(self.previousScene)
+  end)
+
+  self.lost = true
+  self.ui:addChild(button)
+end
+
+function GameScene:update(dt)
+  if self.paused or self.lost then
+    return
+  end
 
   self.physics:update(dt)
   self.ui:update(dt)
@@ -158,8 +178,9 @@ function GameScene:update(dt)
     self.timer = 0
   end
 
-  if self.stockpile:get(ResourceType.Food) <= 0 then
-    self.lost = true
+  if self.stockpile:get(ResourceType.Food) <= 0
+    or self.map.root.health == 0 then
+    self:gameOver()
   end
 
   self.map:update(dt, self.tooltip.isOpen)
@@ -181,16 +202,51 @@ function GameScene:drawUI()
   love.graphics.push("all")
   self.ui:draw()
   self.tooltip:draw()
-  love.graphics.pop()
 
 
   -- Render cost
   if self.currentConnector then
     self.currentConnector:drawCost(self.stockpile)
   end
+
+
+  if self.paused then
+    love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#394a50"), 0.5))
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.setColor(Colour.fromHex("#202e37"))
+    love.graphics.print(
+      "Paused", GameScene.font, love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 0, 1, 1,
+      GameScene.font:getWidth("Paused") / 2, GameScene.font:getHeight() / 2
+    )
+  end
+
+  if self.lost then
+    love.graphics.setColor(Colour.fromHex("#202e37"))
+    love.graphics.print(
+      "Game Over", GameScene.font, love.graphics.getWidth() / 2, 60, 0, 1, 1,
+      GameScene.font:getWidth("Game Over") / 2, GameScene.font:getHeight() / 2
+    )
+
+    local font = Font.upheaval(48)
+
+    local content = "Your people ran out of food"
+    if self.map.root.health == 0 then
+      content = "Your town center has been destroyed"
+    end
+
+    love.graphics.print(
+      content, font, love.graphics.getWidth() / 2, 100, 0, 1, 1,
+      font:getWidth(content) / 2, font:getHeight() / 2
+    )
+  end
+
+  love.graphics.pop()
 end
 
 function GameScene:keypressed(key)
+  if key == "escape" and not self.lost then
+    self.paused = not self.paused
+  end
 end
 
 function GameScene:attachConnector(island)
@@ -212,6 +268,10 @@ function GameScene:attachConnector(island)
 end
 
 function GameScene:mousepressed(x, y, button)
+  if self.lost then
+    return
+  end
+
   self.ui:emit("mousepressed", x, y)
 
   if self.tooltip.isOpen and self.tooltip:inBounds(x, y) then
@@ -249,6 +309,10 @@ function GameScene:mousepressed(x, y, button)
 end
 
 function GameScene:mousemoved()
+  if self.lost then
+    return
+  end
+
   self.map:mousemoved()
 end
 
