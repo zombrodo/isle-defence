@@ -31,18 +31,28 @@ TODO
 
 * [x] Food
 
+* [ ] Menu UI
+* [x] Shift Stockpile to top.
+
+* [ ] Show red text if you cannot afford on build
+* [ ] Error sound effect
+* [ ] Sound/No Sound warning
+* [ ] Pause
+* [ ] Game Over
+
 ---
 
 BUGS
 * [ ] Unbalanced
 * [x] Red Screen when Connecting
-* [ ] Able to hover over two islands
+* [x] Able to hover over two islands
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
+* [x] Shouldn't be able to click on the same island twice
+* [ ] Towers shouldn't shoot out of their range
 * [ ] z-sort entities (mainly shots)
 * [x] Prevent clearing root.
-* [ ] Build origin on Islands
-* [ ] Weird Pairs error
-* [ ] Unable to close Build menu
-* [ ] Replace #222 with Palette
-* [ ] Damaged Items shouldn't produce
+* [x] Build origin on Islands
+* [x] Unable to close Build menu
+* [x] Replace #222 with Palette
+* [x] Damaged Items shouldn't produce

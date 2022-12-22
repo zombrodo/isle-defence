@@ -75,7 +75,7 @@ function Tooltip:update()
 
   if self.isOpen then
     self:updatePosition()
-    self.island.hovered = true
+    self.map.hoveredIsland = self.island
   end
 end
 
@@ -88,7 +88,9 @@ function Tooltip:handleClick(x, y)
     self.buildButton:click(x, y)
   end
 
-  self.clearButton:click(x, y)
+  if self.canClear then
+    self.clearButton:click(x, y)
+  end
 end
 
 function Tooltip:inBounds(x, y)
@@ -103,7 +105,8 @@ function Tooltip:open(island)
     self.canBuild = true
   end
 
-  if self.island.build.buildType ~= BuildType.None then
+  if self.island.build.buildType ~= BuildType.None
+    and self.island ~= self.map.root then
     self.canClear = true
   end
 end

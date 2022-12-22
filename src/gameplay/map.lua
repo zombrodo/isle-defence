@@ -1,5 +1,6 @@
 local BuildType = require "src.gameplay.buildType"
 local Island = require "src.gameplay.island"
+local Math = require "src.utils.math"
 local Queue = require "src.utils.queue"
 local Set = require "src.utils.set"
 
@@ -102,9 +103,25 @@ end
 function Map:draw()
   love.graphics.push("all")
   for i, island in ipairs(self.islands) do
-    island:draw()
+    island:draw(self.hoveredIsland == island)
   end
   love.graphics.pop()
+end
+
+function Map:mousemoved()
+  self.hoveredIsland = nil
+  for i = #self.islands, 1, -1 do
+    if Math.circularBounds(
+      self.islands[i].x, self.islands[i].y, 16, Screen:getMousePosition()
+    ) then
+      self.hoveredIsland = self.islands[i]
+      return
+    end
+  end
+end
+
+function Map:isHovered(island)
+  return self.hoveredIsland == island
 end
 
 return Map

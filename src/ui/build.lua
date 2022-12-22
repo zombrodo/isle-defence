@@ -9,6 +9,7 @@ local BuildOption = require "src.ui.buildOption"
 local Build = require "src.gameplay.build"
 local ResourceType = require "src.gameplay.resourceType"
 local BuildButton = require "src.ui.buildButton"
+local MathUtils = require "src.utils.math"
 
 local BuildPanel = Container:extend()
 
@@ -150,6 +151,12 @@ function BuildPanel:draw()
     BuildPanel.super.draw(self)
   end
   love.graphics.pop()
+end
+
+function BuildPanel:mousepressed(x, y)
+  if not MathUtils.rectBounds(x, y, self.x, self.y, self.w, self.h) then
+    self.visible = false
+  end
 end
 
 return BuildPanel

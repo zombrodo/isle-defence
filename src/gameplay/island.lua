@@ -14,8 +14,8 @@ Island.hovered = love.graphics.newImage("assets/island/highlight.png")
 Island.szWidth = 24
 Island.szHeight = 8
 
-Island.szX = 4
-Island.szY = 10
+Island.szX = 4 + Island.szWidth / 2
+Island.szY = 10 + Island.szHeight / 2
 
 Island.collHeight = 14
 Island.collWidth = 32
@@ -51,7 +51,6 @@ function Island.new(physics, x, y, buildType)
   self.smoke = Particle.smoke()
   self.fire = Particle.fire()
 
-  self.hovered = false
   self.connections = {}
 
   self.fadeOut = false
@@ -93,7 +92,9 @@ function Island:update(dt, isTooltipOpen)
 
   self.x, self.y = self.body:getPosition()
 
-  self.build:update(dt)
+  if self.health > 0 then
+    self.build:update(dt, self.health)
+  end
 
   if isTooltipOpen then
     return
@@ -107,14 +108,11 @@ function Island:update(dt, isTooltipOpen)
     self.fire:update(dt)
   end
 
-  if Math.circularBounds(self.x, self.y, 16, Screen:getMousePosition()) then
-    self.hovered = true
-  elseif self.hovered then
-    self.hovered = false
-  end
+
 end
 
 function Island:attach(connection)
+  print("attaching", #self.connections)
   table.insert(self.connections, connection)
   if not connection.parent then
     connection:setParent(self)
@@ -139,7 +137,7 @@ function Island:damage(amount)
 end
 
 function Island:detach(connection)
-  print(connection)
+  print("detaching", connection)
   for i = #self.connections, 1, -1 do
     if self.connections[i] == connection then
       table.remove(self.connections, i)
@@ -157,12 +155,12 @@ function Island:currentlySetting()
   return false
 end
 
-function Island:draw()
+function Island:draw(isHovered)
   love.graphics.push("all")
   love.graphics.translate(0, self.bob:getValue())
   love.graphics.setColor(1, 1, 1, self.opacity)
 
-  if self.hovered then
+  if isHovered then
     love.graphics.draw(Island.hovered, self.x, self.y, 0, self.opacity, self.opacity, Island.hovered:getWidth() / 2,
       Island.hovered:getHeight() / 2)
 
@@ -189,7 +187,7 @@ function Island:draw()
 
   self.build:draw(
     (self.x + Island.szX) - Island.sprite:getWidth() / 2,
-    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0)
+    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0, self.opacity, self.opacity, Island.szWidth / 2, Island.szHeight / 2)
 
   love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#202e37"), 0.2 * self.opacity))
   love.graphics.ellipse("fill", self.x, self.y + 30, 15 * self.opacity, 8 * self.opacity)
@@ -205,7 +203,7 @@ function Island:draw()
     -- love.graphics.circle("line", self.x, self.y, 75)
   end
 
-  if self.hovered and self.build:hasHealth() then
+  if isHovered and self.build:hasHealth() then
     love.graphics.setColor(Colour.fromHex("#202e37"))
     love.graphics.rectangle(
       "fill",

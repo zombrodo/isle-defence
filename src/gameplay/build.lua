@@ -16,12 +16,12 @@ function Build.new(buildType, island)
   return self
 end
 
-function Build:update(dt)
+function Build:update(dt, health)
   if self.resourceType then
     self.timer = self.timer + dt
     if self.timer >= self.every then
       self.timer = 0
-      Events:publish("stockpile/add", self.resourceType, self.amount)
+      Events:publish("stockpile/add", self.resourceType, self.amount * (health / 100))
     end
   end
 end
@@ -38,10 +38,10 @@ function Build:hasHealth()
   return BuildType.hasHealth(self.buildType)
 end
 
-function Build:draw(x, y, r, sx, sy)
+function Build:draw(x, y, r, sx, sy, ox, oy)
   love.graphics.push("all")
   if self.buildType ~= BuildType.None then
-    love.graphics.draw(BuildType.sprite(self.buildType), x, y, r, sx, sy)
+    love.graphics.draw(BuildType.sprite(self.buildType), x, y, r, sx, sy, ox, oy)
   end
 
   if self.buildType == BuildType.Tower then

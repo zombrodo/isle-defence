@@ -41,7 +41,9 @@ function BuildButton:__islandIcon(islandX, islandY)
     ((islandY + Island.szY * 2) - Island.sprite:getHeight()) - 16,
     0,
     2,
-    2
+    2,
+    Island.szWidth / 2,
+    Island.szHeight / 2
   )
 end
 

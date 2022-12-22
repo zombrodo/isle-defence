@@ -38,12 +38,12 @@ function GameScene:__stockpileUI()
   }
 
   local stockpileRules = Rules.new()
-      :addX(Plan.pixel(10))
-      :addY(Plan.center())
-      :addWidth(Plan.pixel(200))
-      :addHeight(Plan.relative(0.5))
+      :addX(Plan.center())
+      :addY(Plan.pixel(100))
+      :addWidth(Plan.relative(0.5))
+      :addHeight(Plan.pixel(60))
 
-  local stockpile = EvenlySpaced.vertical(stockpileRules, resources, 10)
+  local stockpile = EvenlySpaced.horizontal(stockpileRules, resources, 10)
 
   local buildRules = Rules.new()
       :addX(Plan.max(210))
@@ -198,7 +198,9 @@ function GameScene:attachConnector(island)
     self.currentConnector = Connector.new(self.physics)
   end
 
-  if self.currentConnector:canConnect(self.stockpile) then
+  if self.currentConnector:canConnect(self.stockpile)
+      and self.currentConnector.parent ~= island
+  then
     island:attach(self.currentConnector)
   end
 
@@ -222,7 +224,7 @@ function GameScene:mousepressed(x, y, button)
   end
 
   for i, island in ipairs(self.map.islands) do
-    if island.hovered then
+    if self.map:isHovered(island) then
       if button == 1 then
         if (not self.currentConnector and self.map:isAttached(island))
             or self.currentConnector then
@@ -244,7 +246,10 @@ function GameScene:mousepressed(x, y, button)
     self.currentConnector.parent:detach(self.currentConnector)
     self.currentConnector = nil
   end
+end
 
+function GameScene:mousemoved()
+  self.map:mousemoved()
 end
 
 return GameScene
