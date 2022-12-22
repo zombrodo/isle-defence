@@ -51,6 +51,7 @@ function BuildButton:__islandIcon(islandX, islandY)
 end
 
 function BuildButton:__resources(x, y)
+  love.graphics.push("all")
   local font = Font.upheaval(16)
   local i = 0
   for resource, amount in pairs(self.cost) do
@@ -79,6 +80,7 @@ function BuildButton:__resources(x, y)
       y = y - 32
     end
   end
+  love.graphics.pop()
 end
 
 function BuildButton:draw()

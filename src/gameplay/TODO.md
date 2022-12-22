@@ -31,7 +31,7 @@ TODO
 
 * [x] Food
 
-* [ ] Menu UI
+* [x] Menu UI
 * [x] Shift Stockpile to top.
 
 * [x] Show red text if you cannot afford on build
@@ -39,6 +39,7 @@ TODO
 * [ ] Sound/No Sound option
 * [x] Pause
 * [x] Game Over
+* [ ] Tidy Ropes
 
 ---
 

@@ -124,4 +124,18 @@ function BuildType.displayName(buildType)
   return names[buildType]
 end
 
+local all = { BuildType.None,
+  BuildType.Farm,
+  BuildType.House,
+  BuildType.Forest,
+  BuildType.Woodcutter,
+  BuildType.Ore,
+  BuildType.Mine,
+  BuildType.Hemp
+}
+
+function BuildType.fullRandom()
+  return all[love.math.random(1, #all)]
+end
+
 return BuildType
