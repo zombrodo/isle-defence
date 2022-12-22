@@ -78,7 +78,7 @@ function Island:update(dt, isTooltipOpen)
         and not self.fadeOut
     then
       self.fadeOut = true
-      self.fade = Flux.to(self, 5, { opacity = 0 }):oncomplete(function()
+      self.fade = Flux.to(self, 3, { opacity = 0 }):oncomplete(function()
         self.shouldRemove = true
       end)
     end
@@ -112,7 +112,6 @@ function Island:update(dt, isTooltipOpen)
 end
 
 function Island:attach(connection)
-  print("attaching", #self.connections)
   table.insert(self.connections, connection)
   if not connection.parent then
     connection:setParent(self)
@@ -137,7 +136,6 @@ function Island:damage(amount)
 end
 
 function Island:detach(connection)
-  print("detaching", connection)
   for i = #self.connections, 1, -1 do
     if self.connections[i] == connection then
       table.remove(self.connections, i)
@@ -187,7 +185,8 @@ function Island:draw(isHovered)
 
   self.build:draw(
     (self.x + Island.szX) - Island.sprite:getWidth() / 2,
-    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0, self.opacity, self.opacity, Island.szWidth / 2, Island.szHeight / 2)
+    ((self.y + Island.szY) - Island.sprite:getHeight() / 2) - 8, 0, self.opacity, self.opacity, Island.szWidth / 2,
+    Island.szHeight / 2)
 
   love.graphics.setColor(Colour.withAlpha(Colour.fromHex("#202e37"), 0.2 * self.opacity))
   love.graphics.ellipse("fill", self.x, self.y + 30, 15 * self.opacity, 8 * self.opacity)

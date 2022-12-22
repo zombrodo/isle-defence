@@ -38,7 +38,7 @@ function Map:update(dt, isTooltipOpen)
     local island = self.islands[i]
     island:update(dt, isTooltipOpen)
     if island.shouldRemove then
-      print("removing")
+      island:release()
       table.remove(self.islands, i)
     end
   end

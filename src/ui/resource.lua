@@ -43,7 +43,7 @@ function Resource:draw()
   love.graphics.translate(self.x, self.y)
   love.graphics.draw(self.sprite, self.quad, 0, 0, 0, 6, 6)
   love.graphics.setColor(Colour.fromHex("#202e37"))
-  love.graphics.print(pad(self.stockpile:get(self.resourceType)), font, 60, 14, 0, 1, 1, font:getHeight() / 2)
+  love.graphics.print(pad(math.floor(self.stockpile:get(self.resourceType))), font, 60, 14, 0, 1, 1, font:getHeight() / 2)
   love.graphics.pop()
 end
 

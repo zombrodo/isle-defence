@@ -24,7 +24,6 @@ function TooltipButton:update(x, y)
 end
 
 function TooltipButton:click(x, y)
-  print(x, y, self.x, self.y, self.w, self.h)
   if MathUtils.rectBounds(x, y, self.x, self.y, self.w, self.h) then
     self.onClick()
   end

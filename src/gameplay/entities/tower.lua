@@ -26,7 +26,7 @@ function Tower:find(enemies)
 
   for i, enemy in ipairs(enemies) do
     local dist = MathUtils.distance(self.x, self.y, enemy.x, enemy.y)
-    if dist < r then
+    if dist <= 120 and dist < r then
       r = dist
       e = enemy
     end

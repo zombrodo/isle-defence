@@ -41,7 +41,7 @@ function Enemy:findClosestIsland()
   local nextIsland = nil
 
   for i, island in ipairs(self.map.islands) do
-    if self.map:isAttached(island) and island.health > 0 then
+    if self.map:isAttached(island) and island.health > 0 and island.build:hasHealth() then
       local dist = MathUtils.distance(self.x, self.y, island.x, island.y)
       if dist < distance then
         distance = dist

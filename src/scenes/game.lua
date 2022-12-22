@@ -66,8 +66,6 @@ function GameScene:__stockpileUI()
   self.ui:addChild(self.inventory)
   self.ui:addChild(build)
   self.ui:addChild(self.waveTimer)
-
-  print(self.timer)
 end
 
 function GameScene:enter(previous)
@@ -136,7 +134,7 @@ function GameScene:gameOver()
       :addWidth(Plan.pixel(90))
       :addHeight(Plan.pixel(40))
 
-  local button = Button:new(buttonRules, "Menu", function()
+  self.menuButton = Button:new(buttonRules, "Menu", function()
     if Settings.get("BG_MUSIC") then
       Audio.__cache["bg"]:stop()
     end
@@ -145,7 +143,7 @@ function GameScene:gameOver()
   end)
 
   self.lost = true
-  self.ui:addChild(button)
+  self.ui:addChild(self.menuButton)
 end
 
 function GameScene:update(dt)
@@ -235,12 +233,14 @@ function GameScene:drawUI()
       GameScene.font:getWidth("Game Over") / 2, GameScene.font:getHeight() / 2
     )
 
-    local font = Font.upheaval(48)
+    local font = Font.upheaval(32)
 
-    local content = "Your people ran out of food"
+    local content = "your people ran out of food"
     if self.map.root.health == 0 then
-      content = "Your town center has been destroyed"
+      content = "your town center was destroyed"
     end
+
+    content = "You made it to wave " .. self.waveTimer.currentWave - 1 .. " before " .. content
 
     love.graphics.print(
       content, font, love.graphics.getWidth() / 2, 100, 0, 1, 1,
@@ -279,6 +279,7 @@ end
 
 function GameScene:mousepressed(x, y, button)
   if self.lost then
+    self.menuButton:mousepressed(x, y)
     return
   end
 

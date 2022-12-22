@@ -15,7 +15,6 @@ function Timer:update(dt)
 
   if self.currentSegment >= 15 then
     self.currentSegment = 0
-    print("ding")
   end
 end
 

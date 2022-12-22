@@ -39,18 +39,17 @@ TODO
 * [x] Sound/No Sound option
 * [x] Pause
 * [x] Game Over
-* [ ] Tidy Ropes
 
 ---
 
 BUGS
-* [ ] Unbalanced
+* [x] Unbalanced
 * [x] Red Screen when Connecting
 * [x] Able to hover over two islands
 * [x] Shouldn't be able to build on already built
 * [x] Shouldn't be able to right click unattached island
 * [x] Shouldn't be able to click on the same island twice
-* [ ] Towers shouldn't shoot out of their range
+* [x] Towers shouldn't shoot out of their range
 * [ ] z-sort entities (mainly shots)
 * [x] Prevent clearing root.
 * [x] Build origin on Islands

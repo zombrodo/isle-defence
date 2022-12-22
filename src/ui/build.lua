@@ -24,7 +24,6 @@ function BuildPanel:new(rules, stockpile)
   panel.island = nil
 
   Events:subscribe("buildPanel/show", function(island, buildType)
-    print("showing " .. buildType)
     panel:set(buildType)
     panel.island = island
     panel.visible = true
@@ -128,7 +127,7 @@ function BuildPanel:set(buildType)
   if opts then
     self:clearChildren()
     local totalHeight = #opts * (BuildPanel.optionHeight + BuildPanel.optionGap)
-    print(self.rules:addHeight(totalHeight))
+    self.rules:addHeight(totalHeight)
     local options = EvenlySpaced.vertical(
       Rules.new()
       :addX(Plan.pixel(0))
@@ -139,7 +138,6 @@ function BuildPanel:set(buildType)
       10
     )
     self:addChild(options)
-    print("Added options", #opts, options)
   end
 
   BuildPanel.super.refresh(self)

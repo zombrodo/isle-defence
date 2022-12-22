@@ -4,9 +4,7 @@ local Pixel = require "lib.pixel"
 local Roomy = require "lib.roomy"
 Flux = require "lib.flux"
 
-local GameScene = require "src.scenes.game"
 local MenuScene = require "src.scenes.menu"
-local TutorialScene = require "src.scenes.tutorial"
 
 local PubSub = require "src.utils.pubsub"
 
