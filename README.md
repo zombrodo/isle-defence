@@ -1,5 +1,7 @@
 # Isle Defence
 
+![](/assets/menu.png)
+
 Isle Defence is a game made for the 2022 Secret Santa Game Jam.
 
 As such, it's probably full of bugs and whatnot.
